@@ -1,31 +1,35 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <Header></Header>
+        <router-view></router-view>
+        <Footer></Footer>
     </div>
-    <router-view/>
-  </div>
+
 </template>
+<script>
+import './assets/css/index.css';
+import Header from '@/components/common/header';
+import Footer from '@/components/common/footer';
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+export default {
+    components: {
+        Header,
+        Footer
+    },
+    mounted() {
+        console.log(
+            '这渣代码是我写的\r\n 你居然还要扒开了看\r\n我表示略尴尬\r\n 非要看源码的话：\r\n\r\n\r\n%cfollow me %c https://github.com/geekzhanglei/blogbeta',
+            'color:red',
+            'color:green'
+        );
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState == 'hidden') {
+                document.title = '这里有bug，快看！';
+            } else {
+                document.title = '欢迎回到博客';
+            }
+        });
+    }
+};
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>

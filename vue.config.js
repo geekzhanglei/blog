@@ -30,14 +30,13 @@ module.exports = {
 
     // webpack-dev-server 相关配置
     devServer: {
-        open: process.platform === 'darwin',
+        // open: process.platform === 'darwin',
         host: '127.0.0.1',
         port: 8080,
         https: false,
-        hotOnly: true,
         proxy: {
             '/api': {
-                target: 'http://127.0.1.1:8080',
+                target: 'https://blogapi.feroad.com',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''
