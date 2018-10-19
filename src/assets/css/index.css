@@ -12,4 +12,8 @@ body {
 }
 #app {
     min-height: 100%;
+    padding-bottom: 50px;
+}
+.container {
+    margin: 2rem 3rem;
 }

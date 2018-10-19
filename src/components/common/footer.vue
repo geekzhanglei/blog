@@ -10,8 +10,8 @@ export default {};
 </script>
 <style>
 .footer {
-    /* position: absolute;
-    bottom: 0; */
+    position: absolute;
+    bottom: 0;
     border-top: 3px #f4645e solid;
     width: 100%;
     text-align: center;

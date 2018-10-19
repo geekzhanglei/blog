@@ -105,7 +105,8 @@
 </template>
 <script>
 import router from '@/router';
-import { getArticle } from '@/assets/js/apis';
+import { getArticle, addMark, addSupport } from '@/assets/js/apis';
+import formatTime from '@/assets/js/utils';
 
 export default {
     data() {
@@ -131,45 +132,24 @@ export default {
     },
     methods: {
         // 请求文章数据接口
-        // reqArticleDataApi: function(id) {
-        //     console.log(id);
-        //     getArticle({ id: id }).then(res => {
-        //         console.log(res);
-        //         if (res && res.code === 0) {
-        //             var flag = res.result.status;
-        //             var _data = res.result.data;
-        //             if (flag) {
-        //                 _this.init(_data);
-        //             } else {
-        //                 console.log('接口请求返回错误');
-        //             }
-        //         } else {
-        //             router.replace({
-        //                 path: '/article'
-        //             });
-        //         }
-        //     });
-        //     // $.ajax({
-        //     //     url: vars.url + '/article/newGetArticleDetails/' + id,
-        //     //     type: 'GET',
-        //     //     dataType: 'json',
-        //     //     success: function(res) {
-        //     //         var flag = res.result.status;
-        //     //         var _data = res.result.data;
-        //     //         if (flag) {
-        //     //             _this.init(_data);
-        //     //         } else {
-        //     //             console.log('接口请求返回错误');
-        //     //         }
-        //     //     },
-        //     //     error: function() {
-        //     //         // 请求地址不存在，则跳转到文章列表
-        //     //     }
-        //     // });
-        // },
+        reqArticleDataApi: function(id) {
+            getArticle(id).then(res => {
+                if (res.result) {
+                    if (res.result.status) {
+                        this.init(res.result.data);
+                    } else {
+                        console.log('接口请求返回错误');
+                    }
+                } else {
+                    router.replace({
+                        path: '/'
+                    });
+                }
+            });
+        },
         // 发表评论
-        updateComments: function() {
-            var _this = this;
+        updateComments() {
+            // var _this = this;
             if (!this.verifyInput(this.comment)) {
                 console.log('输入合法性校验失败');
                 return;
@@ -179,42 +159,32 @@ export default {
                     this.comment.website = 'http://' + this.comment.website;
                 }
             }
-            // $.ajax({
-            //     url: vars.url + '/article/addMark',
-            //     type: 'POST',
-            //     dataType: 'json',
-            //     data: {
-            //         articleId: _this.comment.id,
-            //         nickname: _this.comment.nickname,
-            //         email: _this.comment.email,
-            //         website: _this.comment.website,
-            //         content: _this.comment.content
-            //     },
-            //     success: function(res) {
-            //         var flag = res.result.status;
-            //         var _data = res.result.data;
-            //         if (flag) {
-            //             var _obj = {
-            //                 id: _this.comment.id,
-            //                 nickname: _this.comment.nickname,
-            //                 website: _this.comment.website,
-            //                 content: _this.comment.content,
-            //                 create_time: Date.parse(new Date()) / 1000
-            //             };
-            //             _this.comments.push(_obj);
-            //             _this.comment.email = '';
-            //             _this.comment.nickname = '';
-            //             _this.comment.website = '';
-            //             _this.comment.content = '';
-            //         } else {
-            //             console.log('后台返回提示：' + _data);
-            //         }
-            //     },
-            //     error: function() {
-            //         // 请求地址不存在，则跳转到文章列表
-            //         console.log('增加评论失败-请求接口失败');
-            //     }
-            // });
+            addMark({
+                articleId: this.comment.id,
+                nickname: this.comment.nickname,
+                email: this.comment.email,
+                website: this.comment.website,
+                content: this.comment.content
+            }).then(res => {
+                var flag = res.result.status;
+                var _data = res.result.data;
+                if (flag) {
+                    var _obj = {
+                        id: this.comment.id,
+                        nickname: this.comment.nickname,
+                        website: this.comment.website,
+                        content: this.comment.content,
+                        create_time: Date.parse(new Date()) / 1000
+                    };
+                    this.comments.push(_obj);
+                    this.comment.email = '';
+                    this.comment.nickname = '';
+                    this.comment.website = '';
+                    this.comment.content = '';
+                } else {
+                    console.log('后台返回提示：' + _data);
+                }
+            });
         },
         // 用户输入校验
         verifyInput: function(cet) {
@@ -236,38 +206,42 @@ export default {
                 if (!res) {
                     this.comment.errTip = 'email格式不合法';
                 }
+                return res;
             } else {
                 res = false;
                 this.comment.errTip = 'email不可为空或过长';
+                return res;
             }
             if (cet.website) {
-                reg = /^(\w)+(\.(\w)+)+/g;
+                let reg = /^(\w)+(\.(\w)+)+/g;
                 res = reg.test(cet.website);
-                this.comment.errTip =
-                    '网址格式错误，需直接输入类似www.baidu.com的网址';
+                if (!res) {
+                    this.comment.errTip =
+                        '网址格式错误，需直接输入类似www.baidu.com的网址';
+                }
+                return res;
             }
             return res;
         },
-        transferTime: function(unixtime) {
-            return atom.transfer(unixtime);
+        // 时间戳转换
+        transferTime: function(unixTime) {
+            return formatTime(unixTime * 1000, 'yyyy年MM月dd日 hh:mm:ss');
         },
+        // cookie操作
         saveCookie: function() {
             var time, date, UTCtime;
-
-            this.comment.errTip = '';
             this.comment.state = !this.comment.state;
-
             if (this.comment.state) {
                 if (!this.verifyInput(this.comment)) {
                     console.log('输入校验失败，数据不合法');
                     return;
                 }
+                this.comment.errTip = '';
                 // 设置30天为过期时间
                 time = 3600 * 24 * 30 * 1000;
                 date = new Date();
                 date.setTime(date.getTime() + time);
                 UTCtime = date.toUTCString();
-
                 this.setCookie('email', this.comment.email, UTCtime);
                 this.setCookie('nickname', this.comment.nickname, UTCtime);
                 this.setCookie('website', this.comment.website, UTCtime);
@@ -277,7 +251,6 @@ export default {
                 this.deleteCookie('website', '');
             }
         },
-        // cookie操作
         setCookie: function(name, value, expires, path, domain, secure) {
             document.cookie =
                 name +
@@ -296,7 +269,6 @@ export default {
                 if (c[0].replace(' ', '') == name) {
                     return c[1];
                 }
-                // 当undefined时候怎么处理
             }
         },
         deleteCookie: function(name, value) {
@@ -310,7 +282,6 @@ export default {
                 bool = false,
                 storage = window.localStorage,
                 category;
-
             if (item.isVisited) {
                 item.isVisited = false;
                 storage.removeItem('comment_id' + item.id);
@@ -322,25 +293,15 @@ export default {
                 );
                 storage.setItem('comment_id' + item.id, item.id);
             }
-
             item.agrees = Number(item.agrees);
             item.isVisited ? (item.agrees += 1) : (item.agrees -= 1);
             item.isVisited ? (category = 1) : (category = 2);
-
             // 请求接口category1点赞，2取消
             if (this.clickFlag) {
                 this.clickFlag = 0;
-                // 请求接口
-                // $.ajax({
-                //     url: vars.url + '/article/agreeForArticleMarks/' + item.id,
-                //     data: {
-                //         category: category
-                //     },
-                //     dataType: 'json',
-                //     success: function(res) {
-                //         console.log(res.result.data);
-                //     }
-                // });
+                addSupport(item.id, { category }).then(res => {
+                    console.log(res);
+                });
                 setTimeout(function() {
                     _this.clickFlag = 1;
                 }, 1000);
@@ -350,11 +311,10 @@ export default {
             var _this = this,
                 comLen = _data.comments.length,
                 bool;
-
             this.comment.id = _data.id;
             this.title = _data.title;
             this.username = _data.username;
-            this.time = atom.transfer(_data.updated_at);
+            this.time = this.transferTime(_data.updated_at);
             this.cont = _data.content;
             this.intro = _data.introduction;
             this.comments = _data.comments;
@@ -384,16 +344,13 @@ export default {
         }
     },
     mounted: function() {
-        console.log('article加载');
         var article_id = router.currentRoute.params.id;
-        // this.reqArticleDataApi(article_id);
-        this.reqArticleDataApi(1);
+        this.reqArticleDataApi(article_id);
     }
 };
 </script>
 <style scoped>
-/*文章列表与文章详情*/
-.articlelist,
+/*文章详情*/
 .article {
     background: #f8f8f8;
     margin-bottom: 20px;

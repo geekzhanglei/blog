@@ -1,10 +1,10 @@
 /**
  * @author zhanglei25@le.com
- * @date 2018.8.13
+ * @date 2018.10.19
  */
 import axios from 'axios';
 import Promise from 'promise';
-// import Qs from 'qs'
+import Qs from 'qs';
 
 // axios.defaults.baseURL = '/'
 axios.defaults.responseType = 'json';
@@ -57,19 +57,34 @@ axios.interceptors.response.use(
 );
 
 /* api 列表 */
-let Prefix = 'api';
+// let Prefix = 'api';
 // 获取某篇文章
 export const getArticle = params => {
     return axios
-        .get(`${Prefix}/article/newGetArticleDetails/`, {
-            params: params
-        })
+        .get(`/article/newGetArticleDetails/${params}`)
         .then(res => res.data);
 };
 // 获取文章列表
 export const getArticleList = params => {
     return axios
-        .get(`${Prefix}/article/getArticleList`, {
+        .get(`/article/getArticleList`, {
+            params: params
+        })
+        .then(res => res.data);
+};
+// 文章增加评论功能
+export const addMark = params => {
+    return (
+        axios
+            // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
+            .post(`/article/addMark`, Qs.stringify(params))
+            .then(res => res.data)
+    );
+};
+// 文章评论点赞功能
+export const addSupport = (articleId, params) => {
+    return axios
+        .get(`/article/agreeForArticleMarks/${articleId}`, {
             params: params
         })
         .then(res => res.data);

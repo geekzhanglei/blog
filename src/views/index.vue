@@ -5,39 +5,32 @@
                 <div class="col-md-12">
                     <div class="articlelist">
                         <h4>
-                            <router-link :to="{name:'article',params:{id: item.id}}" class="article-l">{{item.title}}</router-link>
+                            <router-link :to="{name:'article',params:{id:item.id}}" class=" article-l">{{item.title}}</router-link>
                         </h4>
                         <p v-html="item.introduction"></p>
-                        <!-- <p class="time">{{transferTime(item.createTime)}}</p> -->
-                        <p class="time">{{item.createTime}}</p>
+                        <p class="time">{{transferTime(item.createTime)}}</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="showPages" class="blog-page">
-            <!-- <paging v-bind:datasource="pagingData"></paging> -->
-        </div>
+        <el-pagination v-if="showPages" class="blog-page" background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="perPage" layout="total, prev, pager, next, jumper" :total="total">
+        </el-pagination>
     </div>
 </template>
 
 <script>
-// import Vue from 'vue';
 import { getArticleList } from '@/assets/js/apis';
-import { transfer } from '@/assets/js/utils';
+import formatTime from '@/assets/js/utils';
 
 export default {
     data() {
         return {
-            // 每页展示多少条
-            pagesize: 5,
             items: [],
-            showPages: false,
-            pagingData: {
-                total: 5,
-                pages: [],
-                page: 1,
-                page_total: 5
-            }
+            showPages: true,
+            // 分页参数
+            total: 0,
+            curPage: 1,
+            perPage: 1
         };
     },
     methods: {
@@ -48,63 +41,33 @@ export default {
             }).then(res => {
                 if (res.result && res.result.status) {
                     this.items = res.result.data;
-                    // if (res.result.isPagination) {
-                    //     this.showPages = true;
-                    //     this.pagingData.page = e;
-                    //     if (this.items[0]) {
-                    //         this.showPages = true;
-                    //     }
-                    //     this.pagingData.total = res.result.rows;
-                    //     this.pagesize = res.result.perpage;
-                    // } else {
-                    //     this.showPages = false;
-                    // }
+                    if (res.result.isPagination) {
+                        this.showPages = true;
+                        this.curPage = e;
+                        this.perPage = Number(res.result.perpage);
+                        this.total = res.result.rows;
+                    } else {
+                        this.showPages = false;
+                    }
                 } else {
-                    this.items = [];
-                    // this.pagingData.total = 0;
-                    // this.pagingData.page = 0;
-                    // this.showPages = false;
+                    this.showPages = false;
                 }
-                this.init();
             });
         },
         // 时间戳转换
-        // transferTime: function(unixTime) {
-        //     return transfer(unixTime);
-        // },
-        // 分页组件
-        init: function() {
-            var _this = this;
-            var i,
-                itemsLen = this.items.length;
-            var page_total,
-                page = _this.pagingData.page;
-            var _temp = parseInt(_this.pagingData.total) / _this.pagesize;
-            page_total = Math.ceil(_temp);
-
-            // 初始化每个评论下会用到的私有属性
-            // for (i = 0; i < itemsLen; i++) {
-            //     Vue.set(this.items[i], 'isAnswer', '回复');
-            //     Vue.set(this.items[i], 'isUnfoldAnswers', '查看回复');
-            //     Vue.set(this.items[i], 'isShowInput', false);
-            //     Vue.set(this.items[i], 'isShowAnswers', false);
-            // }
-            // 获取分页组件数据
-            // this.pagingData = handlePage({
-            //     page: page,
-            //     total: _this.pagingData.total,
-            //     page_total: page_total,
-            //     clickPageCb: function(targetPage) {
-            //         _this.reqArticleDataApi(targetPage);
-            //     }
-            // });
+        transferTime: function(unixTime) {
+            return formatTime(unixTime * 1000, 'yyyy年MM月dd日 hh:mm:ss');
+        },
+        // 分页方法
+        handleSizeChange(val) {
+            console.log(val);
+        },
+        handleCurrentChange(val) {
+            this.reqArticleDataApi(val);
         }
     },
     created: function() {
-        var _this = this;
-        console.log('list加载');
-        // 后期接口放这里，请求一遍接口就完成初始化了
-        this.reqArticleDataApi(_this.pagingData.page);
+        this.reqArticleDataApi(1);
     }
 };
 </script>
@@ -154,5 +117,10 @@ export default {
     height: auto;
     padding-top: 15px;
     padding-bottom: 15px;
+}
+.blog-page {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
 }
 </style>

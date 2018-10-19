@@ -7,7 +7,7 @@ import Article from '@/views/article';
 Vue.use(Router);
 
 export default new Router({
-    mode: 'history',
+    // mode: 'history',
     base: process.env.BASE_URL,
     routes: [
         {
@@ -20,7 +20,7 @@ export default new Router({
             // 文章详情
             path: '/article/:id',
             name: 'article',
-            components: Article
+            component: Article
         }
         // {
         //     path: '/login',
@@ -141,11 +141,6 @@ export default new Router({
         };
     }
     // routes: [
-    //     {
-    //         path: '/',
-    //         name: 'home',
-    //         component: Home
-    //     },
     //     {
     //         path: '/about',
     //         name: 'about',
