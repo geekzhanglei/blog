@@ -1,7 +1,7 @@
 <template>
     <div class="list">
         <div class="container">
-            <div class="row" v-for="(item,index) in items" :key="index">
+            <div v-for="(item,index) in items" :key="index">
                 <div class="col-md-12">
                     <div class="articlelist">
                         <h4>
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <el-pagination v-if="showPages" class="blog-page" background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="curPage" :page-size="perPage" layout="total, prev, pager, next, jumper" :total="total">
+        <el-pagination v-if="showPages" class="blog-page" background @current-change="handleCurrentChange" :current-page="curPage" :page-size="perPage" layout="total, prev, pager, next, jumper" :total="total">
         </el-pagination>
     </div>
 </template>
@@ -59,9 +59,6 @@ export default {
             return formatTime(unixTime * 1000, 'yyyy年MM月dd日 hh:mm:ss');
         },
         // 分页方法
-        handleSizeChange(val) {
-            console.log(val);
-        },
         handleCurrentChange(val) {
             this.reqArticleDataApi(val);
         }

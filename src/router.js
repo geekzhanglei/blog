@@ -3,6 +3,16 @@ import Router from 'vue-router';
 // 业务子页
 import Index from '@/views/index';
 import Article from '@/views/article';
+import About from '@/views/about';
+import Msg from '@/views/msg';
+import Login from '@/views/admin/login';
+import Admin from '@/views/admin/admin';
+import AdminDelete from '@/views/admin/delete';
+import AdminRelease from '@/views/admin/release';
+import AdminComments from '@/views/admin/comments';
+import AdminMsg from '@/views/admin/msg';
+import AdminInfo from '@/views/admin/info';
+import AdminOption from '@/views/admin/option';
 
 Vue.use(Router);
 
@@ -21,85 +31,66 @@ export default new Router({
             path: '/article/:id',
             name: 'article',
             component: Article
+        },
+        {
+            // 微言大义
+            path: '/msg',
+            name: 'msg',
+            component: Msg
+        },
+        {
+            // 关于
+            path: '/about',
+            name: 'about',
+            component: About
+        },
+        // admin部分
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: Admin,
+            children: [
+                {
+                    path: '/admin/delete',
+                    name: 'delete',
+                    component: AdminDelete
+                },
+                {
+                    path: '/admin/release',
+                    name: 'release',
+                    component: AdminRelease
+                },
+                {
+                    path: '/admin/comments',
+                    name: 'comments',
+                    component: AdminComments
+                },
+                {
+                    path: '/admin/msg',
+                    name: 'adminmsg',
+                    component: AdminMsg
+                },
+                {
+                    path: '/admin/info',
+                    name: 'info',
+                    component: AdminInfo
+                },
+                {
+                    path: '/admin/option',
+                    name: 'option',
+                    component: AdminOption
+                }
+            ]
         }
-        // {
-        //     path: '/login',
-        //     name: 'login',
-        //     components: {
-        //         login: {
-        //             template: '<blog-login></blog-login>'
-        //         }
-        //     }
-        // },
-        // {
-        //     path: '/admin',
-        //     name: 'admin',
-        //     components: {
-        //         admin: {
-        //             template: '<blog-admin></blog-admin>'
-        //         }
-        //     },
-        //     children: [
-        //         {
-        //             path: '/admin/delete',
-        //             name: 'delete',
-        //             components: {
-        //                 delete: {
-        //                     template: '<blog-delete></blog-delete>'
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             path: '/admin/release',
-        //             name: 'release',
-        //             components: {
-        //                 release: {
-        //                     template: '<blog-release></blog-release>'
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             path: '/admin/comments',
-        //             name: 'comments',
-        //             components: {
-        //                 comments: {
-        //                     template: '<blog-comments></blog-comments>'
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             path: '/admin/msg',
-        //             name: 'adminmsg',
-        //             components: {
-        //                 msg: {
-        //                     template: '<blog-msg></blog-msg>'
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             path: '/admin/info',
-        //             name: 'info',
-        //             components: {
-        //                 info: {
-        //                     template: '<blog-info></blog-info>'
-        //                 }
-        //             }
-        //         },
-        //         {
-        //             path: '/admin/option',
-        //             name: 'option',
-        //             components: {
-        //                 option: {
-        //                     template: '<blog-option></blog-option>'
-        //                 }
-        //             }
-        //         }
-        //     ]
-        // },
         // {
         //     path: '/article',
         //     name: 'article',
-        //     components: {
+        //     component: {
         //         list: {
         //             template: '<blog-articlelist></blog-articlelist>'
         //         }
@@ -109,7 +100,7 @@ export default new Router({
         //     // 文章详情
         //     path: '/article/:id',
         //     name: 'articleid',
-        //     components: {
+        //     component: {
         //         article: {
         //             template: '<blog-article></blog-article>'
         //         }
@@ -118,7 +109,7 @@ export default new Router({
         // {
         //     path: '/about',
         //     name: 'about',
-        //     components: {
+        //     component: {
         //         about: {
         //             template: '<blog-about></blog-about>'
         //         }
@@ -127,7 +118,7 @@ export default new Router({
         // {
         //     path: '/msg',
         //     name: 'msg',
-        //     components: {
+        //     component: {
         //         msg: {
         //             template: '<blog-msg></blog-msg>'
         //         }

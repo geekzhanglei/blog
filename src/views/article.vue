@@ -1,102 +1,96 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="article post-article clearfix">
-                    <div class="post-head clearfix">
-                        <div class="post-title">
-                            <h4>{{title}}</h4>
-                        </div>
-                        <div class="post-return">
-                            <a href="#/article" class="post-return-a">
-                                <<返回文章列表</a> </div> <div class="post-meta">
-                                    <p class="subhead"><span>作者：{{username}}</span>&nbsp<span>最后编辑于 {{time}}</span></p>
-                        </div>
+        <div class="article post-article clearfix">
+            <div class="post-head clearfix">
+                <div class="post-title">
+                    <h4>{{title}}</h4>
+                </div>
+                <div class="post-return">
+                    <router-link :to="{ name: 'index'}" class="post-return-a"><i class="el-icon-d-arrow-left"></i>返回文章列表</router-link>
+                </div>
+                <div class="post-meta">
+                    <p class="subhead"><span>作者：{{username}}</span>&nbsp<span>最后编辑于 {{time}}</span></p>
+                </div>
+            </div>
+            <div class="post-abs" v-html="intro"></div>
+            <div class="post-cont" v-html="cont"></div>
+            <div class="post-footer clearfix">
+                <p>版权所有，转载注明出处</p>
+            </div>
+            <div class="comment">
+                <div v-if="comments.length">
+                    <div class="head">
+                        <h3>评论（{{comments.length}}条）</h3>
                     </div>
-                    <div class="post-abs" v-html="intro"></div>
-                    <div class="post-cont" v-html="cont"></div>
-                    <div class="post-footer clearfix">
-                        <p>版权所有，转载注明出处</p>
-                    </div>
-                    <div class="comment">
-                        <div v-if="comments.length">
-                            <div class="head">
-                                <h3>评论（{{comments.length}}条）</h3>
-                            </div>
-                            <div class="wrap">
-                                <ul>
-                                    <li v-for="(item,index) in comments" :key="index">
-                                        <div class="cont clearfix">
-                                            <div class="title">
-                                                <span v-if="item.website"><a :href="item.website" target="_blank">{{item.nickname}}</a> 说</span>
-                                                <span v-else>{{item.nickname}} 说</span>
-                                            </div>
-                                            <div class="content">
-                                                <div v-html="item.content"></div>
-                                            </div>
-                                            <div class="foot">
-                                                <p>
-                                                    <span class="expression">
-                                                        <i class="glyphicon glyphicon-thumbs-up" :class="{visited:item.isVisited}" @click.stop="support(item)"></i>
-                                                        <i v-if="item.agrees != 0">{{item.agrees}}</i>
-                                                    </span>
-                                                    <span>{{transferTime(item.create_time)}}</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="comments-reply">
-                            <h3 class="comments-title">我要发表看法</h3>
-                            <div class="comments-content">
-                                <form>
-                                    <div id="comments-open-data">
-                                        <div class="comments-open-text">
-                                            <p><label for="comment-text">您的评论</label></p>
-                                            <p>
-                                                <textarea rows="10" cols="50" v-model="comment.content"></textarea>
-                                            </p>
-                                            <p v-if="comment.errTip" class="errorCls"><span>{{comment.errTip}}</span></p>
-                                        </div>
-                                        <div id="comment-form-name">
-                                            <p><label for="comment-author">您的大名：</label></p>
-                                            <p>
-                                                <input size="30" v-model="comment.nickname">
-                                                <span class="hint"> «-必填</span>
-                                            </p>
-                                        </div>
-                                        <div id="comment-form-email">
-                                            <p><label for="comment-email">电子邮件：</label></p>
-                                            <p>
-                                                <input size="30" v-model="comment.email">
-                                                <span class="hint"> «-必填，不公开</span>
-                                            </p>
-                                        </div>
-                                        <div id="comment-form-url">
-                                            <p><label for="comment-url">个人网址：</label></p>
-                                            <p>
-                                                <input size="30" placeholder="如：www.baidu.com" v-model="comment.website">
-                                                <span class="hint"> «-你的个人网址</span>
-                                            </p>
-                                        </div>
-                                        <div id="comment-form-remember-me">
-                                            <p>
-                                                <label for="comment-bake-cookie">记住个人信息？</label>
-                                                <input type="checkbox" :data-state="comment.state" @click="saveCookie()">
-                                            </p>
-                                        </div>
+                    <div class="wrap">
+                        <ul>
+                            <li v-for="(item,index) in comments" :key="index">
+                                <div class="cont clearfix">
+                                    <div class="title">
+                                        <span v-if="item.website"><a :href="item.website" target="_blank">{{item.nickname}}</a> 说</span>
+                                        <span v-else>{{item.nickname}} 说</span>
                                     </div>
-                                    <div id="comments-open-footer">
+                                    <div class="content">
+                                        <div class="markdown-body" v-html="item.content"></div>
+                                    </div>
+                                    <div class="foot">
                                         <p>
-                                            <button class="submit btn btn-primary" @click="updateComments">发表</button>
-                                            <span class="hint"> «- 点击按钮</span>
+                                            <span class="expression">
+                                                <i class="el-icon-star-off" :class="{visited:item.isVisited}" @click.stop="support(item)"></i>
+                                                <i v-if="item.agrees != 0">{{item.agrees}}</i>
+                                            </span>
+                                            <span>{{transferTime(item.create_time)}}</span>
                                         </p>
                                     </div>
-                                </form>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="comments-reply">
+                    <h3 class="comments-title">我要发表看法</h3>
+                    <div class="comments-content">
+                        <form>
+                            <div id="comments-open-data">
+                                <div class="comments-open-text">
+                                    <p><label for="comment-text">您的评论</label></p>
+                                    <!-- <el-input v-model="comment.content" type="textarea" row=5></el-input> -->
+                                    <textarea rows="10" cols="50" v-model="comment.content"></textarea>
+                                    <p v-if="comment.errTip" class="errorCls"><span>{{comment.errTip}}</span></p>
+                                </div>
+                                <div id="comment-form-name">
+                                    <p><label for="comment-author">您的大名：</label></p>
+                                    <p>
+                                        <input size="30" v-model="comment.nickname">
+                                        <span class="hint"> «-必填</span>
+                                    </p>
+                                </div>
+                                <div id="comment-form-email">
+                                    <p><label for="comment-email">电子邮件：</label></p>
+                                    <p>
+                                        <input size="30" v-model="comment.email">
+                                        <span class="hint"> «-必填，不公开</span>
+                                    </p>
+                                </div>
+                                <div id="comment-form-url">
+                                    <p><label for="comment-url">个人网址：</label></p>
+                                    <p>
+                                        <input size="30" placeholder="如：www.baidu.com" v-model="comment.website">
+                                        <span class="hint"> «-你的个人网址</span>
+                                    </p>
+                                </div>
+                                <div id="comment-form-remember-me">
+                                    <p>
+                                        <label for="comment-bake-cookie">记住个人信息？</label>
+                                        <input type="checkbox" :data-state="comment.state" @click="saveCookie()">
+                                    </p>
+                                </div>
                             </div>
-                        </div>
+                            <div id="comments-open-footer">
+                                <el-button class="submit" type="primary" size="medium" round @click="updateComments">发表</el-button>
+                                <span class="hint"> «- 点击按钮</span>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -104,7 +98,6 @@
     </div>
 </template>
 <script>
-import router from '@/router';
 import { getArticle, addMark, addSupport } from '@/assets/js/apis';
 import formatTime from '@/assets/js/utils';
 
@@ -141,7 +134,7 @@ export default {
                         console.log('接口请求返回错误');
                     }
                 } else {
-                    router.replace({
+                    this.$router.replace({
                         path: '/'
                     });
                 }
@@ -344,7 +337,7 @@ export default {
         }
     },
     mounted: function() {
-        var article_id = router.currentRoute.params.id;
+        var article_id = this.$router.currentRoute.params.id;
         this.reqArticleDataApi(article_id);
     }
 };
@@ -443,6 +436,7 @@ p.subhead span {
 
 .comment {
     margin: 25px 50px;
+    overflow: hidden;
 }
 .comment .head {
     margin: 20px 0;
@@ -499,8 +493,10 @@ p.subhead span {
     line-height: 1.2;
     padding: 0.4em 0.3em;
 }
+
 #comments-open-footer .submit {
     width: 22%;
+    margin: 2rem 0 3rem;
 }
 #wait p {
     background: #fefefe;

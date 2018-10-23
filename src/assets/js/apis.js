@@ -29,9 +29,14 @@ const errCode = {
 // 请求拦截器
 
 axios.interceptors.request.use(
-    config => {
-        // 显示loading
-        return config;
+    request => {
+        // 可以显示loading
+        // Qs对参数的格式化在拦截器中处理
+        if (request.method === 'post') {
+            request.data = Qs.stringify(request.data);
+            return request;
+        }
+        return request;
     },
     error => {
         return Promise.reject(error);
@@ -42,7 +47,7 @@ axios.interceptors.request.use(
 // 响应拦截器用来异常处理
 axios.interceptors.response.use(
     response => {
-        return response;
+        return response.data;
     },
     err => {
         if (err && err.response) {
@@ -57,35 +62,130 @@ axios.interceptors.response.use(
 );
 
 /* api 列表 */
-// let Prefix = 'api';
+let Prefix = 'api';
+let config = {
+    headers: { 'Content-Type': 'multipart/form-data' }
+};
 // 获取某篇文章
 export const getArticle = params => {
-    return axios
-        .get(`/article/newGetArticleDetails/${params}`)
-        .then(res => res.data);
+    return axios.get(`/article/newGetArticleDetails/${params}`);
 };
 // 获取文章列表
 export const getArticleList = params => {
-    return axios
-        .get(`/article/getArticleList`, {
-            params: params
-        })
-        .then(res => res.data);
+    return axios.get(`/article/getArticleList`, {
+        params: params
+    });
 };
 // 文章增加评论功能
 export const addMark = params => {
     return (
         axios
             // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
-            .post(`/article/addMark`, Qs.stringify(params))
-            .then(res => res.data)
+            .post(`/article/addMark`, params)
+        // .then(res => res.data)
     );
 };
-// 文章评论点赞功能
+// 文章评论点赞和取消点赞功能
 export const addSupport = (articleId, params) => {
-    return axios
-        .get(`/article/agreeForArticleMarks/${articleId}`, {
-            params: params
-        })
-        .then(res => res.data);
+    return axios.get(`/article/agreeForArticleMarks/${articleId}`, {
+        params: params
+    });
+};
+// 获取动态列表
+export const getMsgList = params => {
+    return axios.get(`${Prefix}/page`, {
+        params: params
+    });
+};
+// 添加动态
+export const addMsg = params => {
+    return axios.post(`${Prefix}/add`, params);
+};
+// 动态下添加评论
+export const addReplyMsg = params => {
+    return axios.post(`${Prefix}/reply/add`, params);
+};
+// 动态点赞功能
+export const msgSupport = (id, params) => {
+    return axios.get(`${Prefix}/agree/${id}`, {
+        params: params
+    });
+};
+// 登录接口
+export const adminLogin = params => {
+    return axios.post(`${Prefix}/admin/login`, params);
+};
+// 判断是否登录态
+export const isLogin = params => {
+    return axios.get(`${Prefix}/admin/isLogin`, {
+        params: params
+    });
+};
+// 获取个人信息
+export const getAdminInfo = params => {
+    return axios.get(`${Prefix}/admin/getAdministerInfo`, {
+        params: params
+    });
+};
+// 登录注销
+export const loginOut = params => {
+    return axios.get(`${Prefix}/admin/loginout`, {
+        params: params
+    });
+};
+// 修改密码
+export const modifyPsw = params => {
+    return axios.post(`${Prefix}/admin/modifyPassword`, params);
+};
+// 设置默认文章页数
+export const setDefaultArticlePages = params => {
+    return axios.post(`${Prefix}/admin/setDefaultArticlePages`, params);
+};
+// 修改留言板单页条数与默认留言昵称、默认回复昵称接口
+export const setDefaultCommentInfos = params => {
+    return axios.post(`${Prefix}/admin/setDefaultCommentInfos`, params);
+};
+// 后台留言列表获取
+export const getAdminMsgList = params => {
+    return axios.get(`${Prefix}/pageForAdmin`, {
+        params: params
+    });
+};
+// 删除留言
+export const deleteMsg = (id, params) => {
+    return axios.get(`${Prefix}/delete/${id}`, {
+        params: params
+    });
+};
+// 发布文章
+export const releaseArt = params => {
+    return axios.post(`/article/add`, params);
+};
+// 删除评论
+export const deleteComms = (id, params) => {
+    return axios.get(`/article/deleteMark/${id}`, {
+        params: params
+    });
+};
+// 获取带评论的文章
+export const getArticleListWithMark = params => {
+    return axios.post(`/article/getArticleListWithMark`, params);
+};
+// 获取带摘要的文章列表
+export const getArticleIntroList = params => {
+    return axios.get(`${Prefix}/admin/getArticleIntroList`, {
+        params: params
+    });
+};
+// 删除文章
+export const deleteArticle = (id, params) => {
+    return axios.post(`/article/deleteArticleById/${id}`, params);
+};
+// 上传头像图片
+export const modifyAdministerInfo = (params, config = config) => {
+    return axios.post(`${Prefix}/admin/modityAdministerInfo`, params, config);
+};
+// markdown内图片逐一上传
+export const markdownImgUpload = (params, config = config) => {
+    return axios.post(`${Prefix}/admin/markdownImgUpload`, params, config);
 };

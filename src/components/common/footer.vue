@@ -12,14 +12,14 @@ export default {};
 .footer {
     position: absolute;
     bottom: 0;
-    border-top: 3px #f4645e solid;
+    border-top: 3px #fecf4b solid;
     width: 100%;
     text-align: center;
 }
 .footer p {
     color: #aaa;
-    background: #151515;
-    border-top: 1px #2a2a2a solid;
+    background: #545c64;
+    border-top: 1px #545c64 solid;
     padding: 15px 0;
     margin: 0;
     font-weight: normal;
