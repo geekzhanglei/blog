@@ -30,6 +30,6 @@
 
 ```
 yarn install
-yarn run serve
-yarn run build
+yarn serve
+yarn build
 ```
