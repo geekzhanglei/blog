@@ -17,7 +17,7 @@ import AdminOption from '@/views/admin/option';
 Vue.use(Router);
 
 export default new Router({
-    // mode: 'history',
+    mode: 'history',
     base: process.env.BASE_URL,
     routes: [
         {

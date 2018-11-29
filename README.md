@@ -29,7 +29,7 @@
 ## bash
 
 ```
-yarn install
+yarn
 yarn serve
 yarn build
 ```

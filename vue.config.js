@@ -1,6 +1,6 @@
 module.exports = {
     // 基本路径
-    baseUrl: process.env.NODE_ENV === 'production' ? './' : '/', // 输出文件目录
+    baseUrl: process.env.NODE_ENV === 'production' ? './' : '/', //  ./表示相对目录 /表示绝对目录
     outputDir: 'dist',
     // eslint-loader 是否在保存的时候检查
     lintOnSave: true,
