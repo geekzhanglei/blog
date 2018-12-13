@@ -19,8 +19,7 @@ Vue.use(Router);
 export default new Router({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes: [
-        {
+    routes: [{
             // 首页即列表页
             path: '/',
             name: 'index',
@@ -54,8 +53,7 @@ export default new Router({
             path: '/admin',
             name: 'admin',
             component: Admin,
-            children: [
-                {
+            children: [{
                     path: '/admin/delete',
                     name: 'delete',
                     component: AdminDelete

@@ -1,7 +1,7 @@
 <template>
-    <div id="admin">
-        <router-view></router-view>
-    </div>
+  <div id="admin">
+    <router-view></router-view>
+  </div>
 
 </template>
 <script>
@@ -9,7 +9,7 @@ import "./assets/css/index.css";
 
 export default {
   mounted() {
-    if (this.$route.path === "/") {
+    if (this.$route.path === "/admin.html") {
       this.$router.replace({
         name: "login"
       });
