@@ -51,9 +51,9 @@ axios.interceptors.response.use(
     },
     err => {
         if (err && err.response) {
-            errCode[err.response.status]
-                ? (err.message = errCode[err.response.status])
-                : (err.message = `连接错误${err.response.status}`);
+            errCode[err.response.status] ?
+                (err.message = errCode[err.response.status]) :
+                (err.message = `连接错误${err.response.status}`);
         } else {
             err.message = '连接到服务器失败';
         }
@@ -64,7 +64,9 @@ axios.interceptors.response.use(
 /* api 列表 */
 let Prefix = 'api';
 let config = {
-    headers: { 'Content-Type': 'multipart/form-data' }
+    headers: {
+        'Content-Type': 'multipart/form-data'
+    }
 };
 // 获取某篇文章
 export const getArticle = params => {
@@ -80,8 +82,8 @@ export const getArticleList = params => {
 export const addMark = params => {
     return (
         axios
-            // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
-            .post(`/article/addMark`, params)
+        // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
+        .post(`/article/addMark`, params)
         // .then(res => res.data)
     );
 };
@@ -187,5 +189,5 @@ export const modifyAdministerInfo = (params, config = config) => {
 };
 // markdown内图片逐一上传
 export const markdownImgUpload = (params, config = config) => {
-    return axios.post(`${Prefix}/admin/markdownImgUpload`, params, config);
+    return axios.post(`https://api.feroad.com/upload`, params, config);
 };

@@ -13,7 +13,7 @@
             <div class="admin-editor"></div>
         </div>
         <!-- <div id="main"> -->
-        <mavon-editor v-model="mdInput" :ishljs="true" :toolbars="toolbars" :boxShadow="false" @save="commit()" @change="commitHtml" @imgAdd="$imgAdd" />
+        <mavon-editor v-model="mdInput" :ishljs="true" :toolbars="toolbars" :boxShadow="false" @save="commit()" @change="commitHtml" @imgAdd="$imgAdd" ref='md'/>
         <!-- </div> -->
         <el-button class="commit" type="primary" @click="saveArticle()" plain>确认发表</el-button>
     </div>
@@ -23,7 +23,7 @@ import { releaseArt } from '@/assets/js/apis';
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
 import Vue from 'vue';
-
+import {markdownImgUpload} from '@/assets/js/apis';
 Vue.use(mavonEditor);
 
 export default {
@@ -114,12 +114,12 @@ export default {
             this.toolbars.htmlcode = false;
             // 第一步.将图片上传到服务器.
             let formdata = new FormData();
-            formdata.append('image', $file);
+            formdata.append('file', $file);
             markdownImgUpload(formdata).then(url => {
                 console.log(url);
                 // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
                 // $vm.$img2Url 详情见本页末尾
-                $vm.$img2Url(pos, url);
+                this.$refs.md.$img2Url(pos, url);
             });
         }
     }
