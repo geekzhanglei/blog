@@ -63,6 +63,8 @@ axios.interceptors.response.use(
 
 /* api 列表 */
 let Prefix = process.env.NODE_ENV === 'production' ? 'https://blogapi.feroad.com' : '/api';
+let ImgPrefix = process.env.NODE_ENV === 'production' ? 'https://api.feroad.com' : '/api';
+
 // 获取某篇文章
 export const getArticle = params => {
     return axios.get(`${Prefix}/article/newGetArticleDetails/${params}`);
@@ -188,7 +190,7 @@ export const modifyAdministerInfo = params => {
 };
 // markdown内图片逐一上传
 export const markdownImgUpload = params => {
-    return axios.post(`${Prefix}/upload`, params, {
+    return axios.post(`${ImgPrefix}/upload`, params, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
