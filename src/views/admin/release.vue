@@ -2,7 +2,9 @@
     <div>
         <div class="admin-editor-wrap">
             <div class="tips">
-                <span><i class="el-icon-edit-outline"></i> 写文章-发表您的文章</span>
+                <span>
+                    <i class="el-icon-edit-outline"></i> 写文章-发表您的文章
+                </span>
             </div>
             <el-row>
                 <el-input type="text" v-model="title" autofocus placeholder="请输入标题(必填)"></el-input>
@@ -13,24 +15,24 @@
             <div class="admin-editor"></div>
         </div>
         <!-- <div id="main"> -->
-        <mavon-editor v-model="mdInput" :ishljs="true" :toolbars="toolbars" :boxShadow="false" @save="commit()" @change="commitHtml" @imgAdd="$imgAdd" ref='md'/>
+        <mavon-editor @imgAdd="$imgAdd" ref="md"></mavon-editor>
         <!-- </div> -->
         <el-button class="commit" type="primary" @click="saveArticle()" plain>确认发表</el-button>
     </div>
 </template>
 <script>
-import { releaseArt } from '@/assets/js/apis';
-import mavonEditor from 'mavon-editor';
-import 'mavon-editor/dist/css/index.css';
-import Vue from 'vue';
-import {markdownImgUpload} from '@/assets/js/apis';
+// import { releaseArt } from '@/assets/js/apis';
+import mavonEditor from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+import Vue from "vue";
+import { markdownImgUpload } from "@/assets/js/apis";
 Vue.use(mavonEditor);
 
 export default {
     data: function() {
         return {
-            title: '',
-            digest: '',
+            title: "",
+            digest: "",
             toolbars: {
                 bold: true, // 粗体
                 italic: true, // 斜体
@@ -66,8 +68,8 @@ export default {
                 subfield: true, // 单双栏模式
                 preview: true // 预览
             },
-            mdInput: '',
-            htmlInput: ''
+            mdInput: "",
+            htmlInput: ""
         };
     },
     methods: {
@@ -80,7 +82,7 @@ export default {
         saveArticle: function() {
             var isEmpty = this.title && this.digest && this.mdInput;
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                alert("游客无权操作");
                 return;
             }
             if (!isEmpty) {
@@ -97,12 +99,12 @@ export default {
             }).then(res => {
                 if (res.result.status) {
                     // 清空输入
-                    this.title = '';
-                    this.digest = '';
-                    this.mdInput = '';
+                    this.title = "";
+                    this.digest = "";
+                    this.mdInput = "";
                 } else {
-                    if (res.result.data === '没有token值') {
-                        alert('游客无权操作');
+                    if (res.result.data === "没有token值") {
+                        alert("游客无权操作");
                         return;
                     }
                 }
@@ -110,15 +112,17 @@ export default {
         },
         // markdown上传图片功能
         $imgAdd(pos, $file) {
-            // 关闭查看html源码按钮，这个按钮有图片时会造成浏览器假死
-            this.toolbars.htmlcode = false;
             // 第一步.将图片上传到服务器.
-            let formdata = new FormData();
-            formdata.append('file', $file);
-            markdownImgUpload(formdata).then(url => {
-                console.log(url);
+            var formdata = new FormData();
+            formdata.append("file", $file);
+            markdownImgUpload(formdata).then(res => {
+                let url = res.data.imgUrl;
                 // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-                // $vm.$img2Url 详情见本页末尾
+                /**
+                 * $vm 指为mavonEditor实例，可以通过如下两种方式获取
+                 * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
+                 * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
+                 */
                 this.$refs.md.$img2Url(pos, url);
             });
         }

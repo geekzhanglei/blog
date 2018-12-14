@@ -63,11 +63,6 @@ axios.interceptors.response.use(
 
 /* api 列表 */
 let Prefix = 'api';
-let config = {
-    headers: {
-        'Content-Type': 'multipart/form-data'
-    }
-};
 // 获取某篇文章
 export const getArticle = params => {
     return axios.get(`/article/newGetArticleDetails/${params}`);
@@ -184,10 +179,18 @@ export const deleteArticle = (id, params) => {
     return axios.post(`/article/deleteArticleById/${id}`, params);
 };
 // 上传头像图片
-export const modifyAdministerInfo = (params, config = config) => {
-    return axios.post(`${Prefix}/admin/modityAdministerInfo`, params, config);
+export const modifyAdministerInfo = params => {
+    return axios.post(`${Prefix}/admin/modityAdministerInfo`, params, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 // markdown内图片逐一上传
-export const markdownImgUpload = (params, config = config) => {
-    return axios.post(`https://api.feroad.com/upload`, params, config);
+export const markdownImgUpload = params => {
+    return axios.post(`https://api.feroad.com/upload`, params, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
