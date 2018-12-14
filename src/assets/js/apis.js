@@ -62,14 +62,14 @@ axios.interceptors.response.use(
 );
 
 /* api 列表 */
-let Prefix = 'api';
+let Prefix = process.env.NODE_ENV === 'production' ? 'https://blogapi.feroad.com' : '/api';
 // 获取某篇文章
 export const getArticle = params => {
-    return axios.get(`/article/newGetArticleDetails/${params}`);
+    return axios.get(`${Prefix}/article/newGetArticleDetails/${params}`);
 };
 // 获取文章列表
 export const getArticleList = params => {
-    return axios.get(`/article/getArticleList`, {
+    return axios.get(`${Prefix}/article/getArticleList`, {
         params: params
     });
 };
@@ -78,13 +78,13 @@ export const addMark = params => {
     return (
         axios
         // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
-        .post(`/article/addMark`, params)
+        .post(`${Prefix}/article/addMark`, params)
         // .then(res => res.data)
     );
 };
 // 文章评论点赞和取消点赞功能
 export const addSupport = (articleId, params) => {
-    return axios.get(`/article/agreeForArticleMarks/${articleId}`, {
+    return axios.get(`${Prefix}/article/agreeForArticleMarks/${articleId}`, {
         params: params
     });
 };
@@ -156,17 +156,17 @@ export const deleteMsg = (id, params) => {
 };
 // 发布文章
 export const releaseArt = params => {
-    return axios.post(`/article/add`, params);
+    return axios.post(`${Prefix}/article/add`, params);
 };
 // 删除评论
 export const deleteComms = (id, params) => {
-    return axios.get(`/article/deleteMark/${id}`, {
+    return axios.get(`${Prefix}/article/deleteMark/${id}`, {
         params: params
     });
 };
 // 获取带评论的文章
 export const getArticleListWithMark = params => {
-    return axios.post(`/article/getArticleListWithMark`, params);
+    return axios.post(`${Prefix}/article/getArticleListWithMark`, params);
 };
 // 获取带摘要的文章列表
 export const getArticleIntroList = params => {
@@ -176,7 +176,7 @@ export const getArticleIntroList = params => {
 };
 // 删除文章
 export const deleteArticle = (id, params) => {
-    return axios.post(`/article/deleteArticleById/${id}`, params);
+    return axios.post(`${Prefix}/article/deleteArticleById/${id}`, params);
 };
 // 上传头像图片
 export const modifyAdministerInfo = params => {
@@ -188,7 +188,7 @@ export const modifyAdministerInfo = params => {
 };
 // markdown内图片逐一上传
 export const markdownImgUpload = params => {
-    return axios.post(`https://api.feroad.com/upload`, params, {
+    return axios.post(`${Prefix}/upload`, params, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

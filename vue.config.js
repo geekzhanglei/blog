@@ -35,20 +35,17 @@ module.exports = {
         port: 8080,
         https: false,
         proxy: {
-            'article/': {
-                target: 'https://blogapi.feroad.com',
-                changeOrigin: true
-                // pathRewrite: {
-                //     '^/api': ''
-                // }
-            },
-            'api/': {
+            '/api/': {
                 target: 'https://blogapi.feroad.com',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''
                 }
-            }
+            },
+            '/api/upload': {
+                target: 'https://api.feroad.com',
+                changeOrigin: true,
+            },
         },
         before: app => {}
     },
