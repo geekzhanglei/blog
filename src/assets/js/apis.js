@@ -32,7 +32,7 @@ axios.interceptors.request.use(
     request => {
         // 可以显示loading
         // Qs对参数的格式化在拦截器中处理
-        if (request.method === 'post') {
+        if (request.method === 'post'&&(!request.data instanceof FormData)) {
             request.data = Qs.stringify(request.data);
             return request;
         }
@@ -63,7 +63,7 @@ axios.interceptors.response.use(
 
 /* api 列表 */
 let Prefix = process.env.NODE_ENV === 'production' ? 'https://blogapi.feroad.com' : '/api';
-let ImgPrefix = process.env.NODE_ENV === 'production' ? 'https://api.feroad.com' : '/api';
+let ImgPrefix = process.env.NODE_ENV === 'production' ? 'https://api.feroad.com' : '/imgapi';
 
 // 获取某篇文章
 export const getArticle = params => {

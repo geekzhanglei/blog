@@ -25,7 +25,7 @@ import Vue from "vue";
 import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import { releaseArt, markdownImgUpload } from "@/assets/js/apis";
-// import axios from "axios";
+
 Vue.use(mavonEditor);
 export default {
     data: function() {
@@ -110,34 +110,12 @@ export default {
             });
         },
         // markdown上传图片功能
-        // $imgAdd(pos, $file) {
-        //     // 第一步.将图片上传到服务器.
-        //     var formdata = new FormData();
-        //     formdata.append("file", $file);
-        //     console.log(formdata.get("file"));
-        //     markdownImgUpload(formdata).then(res => {
-        //         console.log("res=" + res);
-        //         let url = res.data.imgUrl;
-        //         // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-        //         /**
-        //          * $vm 指为mavonEditor实例，可以通过如下两种方式获取
-        //          * 1. 通过引入对象获取: `import {mavonEditor} from ...` 等方式引入后，`$vm`为`mavonEditor`
-        //          * 2. 通过$refs获取: html声明ref : `<mavon-editor ref=md ></mavon-editor>，`$vm`为 `this.$refs.md`
-        //          */
-        //         this.$refs.md.$img2Url(pos, url);
-        //     });
-        // }
         $imgAdd(pos, $file) {
             // 第一步.将图片上传到服务器.
             var formdata = new FormData();
             formdata.append("file", $file);
-            axios({
-                url: "https://api.feroad.com/upload",
-                method: "post",
-                data: formdata,
-                headers: { "Content-Type": "multipart/form-data" }
-            }).then(data => {
-                let url = data.data.imgUrl;
+            markdownImgUpload(formdata).then(res => {
+                let url = res.imgUrl;
                 // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
                 /**
                  * $vm 指为mavonEditor实例，可以通过如下两种方式获取

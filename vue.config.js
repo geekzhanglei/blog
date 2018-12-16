@@ -42,9 +42,12 @@ module.exports = {
                     '^/api': ''
                 }
             },
-            '/api/upload': {
+            '/imgapi': {
                 target: 'https://api.feroad.com',
                 changeOrigin: true,
+                pathRewrite: {
+                    '^/imgapi': ''
+                }
             },
         },
         before: app => {}
