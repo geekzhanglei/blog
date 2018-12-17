@@ -1,22 +1,17 @@
 <template>
-    <div>
-        <div class="admin-editor-wrap">
-            <div class="tips">
-                <span>
-                    <i class="el-icon-edit-outline"></i> 写文章-发表您的文章
-                </span>
-            </div>
-            <el-row>
-                <el-input type="text" v-model="title" autofocus placeholder="请输入标题(必填)"></el-input>
-            </el-row>
-            <el-row>
-                <el-input type="textarea" :rows="3" v-model="digest" placeholder="请输入摘要(必填)"></el-input>
-            </el-row>
-            <div class="admin-editor"></div>
+    <div class="release-wrap">
+        <div class="tips">
+            <span>
+                <i class="el-icon-edit-outline"></i> 写文章-发表您的文章
+            </span>
         </div>
-        <!-- <div id="main"> -->
+        <el-row>
+            <el-input type="text" v-model="title" autofocus placeholder="请输入标题(必填)"></el-input>
+        </el-row>
+        <el-row>
+            <el-input type="textarea" :rows="3" v-model="digest" placeholder="请输入摘要(必填)"></el-input>
+        </el-row>
         <mavon-editor @imgAdd="$imgAdd" ref="md"></mavon-editor>
-        <!-- </div> -->
         <el-button class="commit" type="primary" @click="saveArticle()" plain>确认发表</el-button>
     </div>
 </template>
@@ -135,5 +130,10 @@ export default {
 .commit {
     float: right;
     margin: 2rem 0;
+}
+</style>
+<style>
+.release-wrap {
+    width: 100%;
 }
 </style>
