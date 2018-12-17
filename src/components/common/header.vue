@@ -1,7 +1,16 @@
 <template>
     <div>
-        <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-            <el-menu-item index="admin"><a href="@/../admin.html">管理后台</a></el-menu-item>
+        <el-menu
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+        >
+            <el-menu-item index="login">
+                <router-link tag="a" :to="{name:'login'}">管理后台</router-link>
+            </el-menu-item>
             <el-menu-item index="me">
                 <router-link tag="li" :to="{name:'about'}" class="h_msg ani-menulist" exact>
                     <a>关于博客</a>
@@ -43,7 +52,7 @@
                 </router-link>,
             </ul>,
         </div>,
-    </nav> -->
+    </nav>-->
 </template>
 <script>
 export default {

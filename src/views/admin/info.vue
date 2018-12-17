@@ -1,7 +1,9 @@
 <template>
     <div class="wrap-info">
         <div class="tips">
-            <span><i class="el-icon-service"></i> 用户信息-修改管理员信息</span>
+            <span>
+                <i class="el-icon-service"></i> 用户信息-修改管理员信息
+            </span>
         </div>
         <el-row>
             <el-col :span="6" class="info-sidebar">
@@ -42,15 +44,31 @@
                             <p>当前账号：{{nickname}}</p>
                         </dt>
                         <dd>
-                            <input type="password" v-model="oldPswd" @input="showPwErr(1)" placeholder="请输入当前密码">
+                            <input
+                                type="password"
+                                v-model="oldPswd"
+                                @input="showPwErr(1)"
+                                placeholder="请输入当前密码"
+                            >
                             <span v-if="errTip.one" class="info-err">请输入6-16位密码，字母区分大小写</span>
                             <span v-if="errTip.pswdErr" class="info-err">原密码输入错误，请核对后再输入</span>
+                        </dd>
                         <dd>
-                            <input type="password" v-model="newPswd" @input="showPwErr(2)" placeholder="请输入新密码">
+                            <input
+                                type="password"
+                                v-model="newPswd"
+                                @input="showPwErr(2)"
+                                placeholder="请输入新密码"
+                            >
                             <span v-if="errTip.two" class="info-err">请输入6-16位密码，字母区分大小写</span>
                         </dd>
                         <dd>
-                            <input type="password" v-model="confirmPswd" @input="showPwErr(3)" placeholder="确认新密码">
+                            <input
+                                type="password"
+                                v-model="confirmPswd"
+                                @input="showPwErr(3)"
+                                placeholder="确认新密码"
+                            >
                             <span v-if="errTip.three" class="info-err">两次输入的密码不一致，请重新输入</span>
                         </dd>
                         <dd>
@@ -70,16 +88,16 @@
     </div>
 </template>
 <script>
-import { loginOut, modifyPsw, modifyAdministerInfo } from '@/assets/js/apis';
-import { mapState } from 'vuex';
-let Base64 = require('js-base64').Base64;
+import { loginOut, modifyPsw, modifyAdministerInfo } from "@/assets/js/apis";
+import { mapState } from "vuex";
+let Base64 = require("js-base64").Base64;
 
 export default {
     data: function() {
         return {
             visitedNum: 1,
             showEditInfo: false,
-            inputName: '',
+            inputName: "",
             showNameErr: false,
             showModifyPwOK: false,
             errTip: {
@@ -88,11 +106,11 @@ export default {
                 three: false,
                 pswdErr: false
             },
-            oldPswd: '',
-            newPswd: '',
-            confirmPswd: '',
+            oldPswd: "",
+            newPswd: "",
+            confirmPswd: "",
             countdown: 5,
-            file: ''
+            file: ""
         };
     },
     computed: {
@@ -105,7 +123,7 @@ export default {
         },
         countdownJump() {
             console.log(typeof this.countdown);
-            console.log('测试');
+            console.log("测试");
             if (!this.countdown) {
                 this.countdown = 5;
                 this.loginout();
@@ -122,10 +140,10 @@ export default {
             var name = e.target.innerText;
             this.showEditInfo = false;
             switch (name) {
-                case '基础信息':
+                case "基础信息":
                     this.visitedNum = 1;
                     break;
-                case '修改密码':
+                case "修改密码":
                     this.visitedNum = 2;
                     break;
                 default:
@@ -135,18 +153,18 @@ export default {
         editInfo: function() {
             this.showNameErr = false;
             this.showEditInfo = !this.showEditInfo;
-            this.inputName = '';
+            this.inputName = "";
         },
         saveName: function() {
             if (this.inputName) {
                 // 请求接口
-                this.$store.commit('setNickname', this.inputName);
+                this.$store.commit("setNickname", this.inputName);
                 // 上传头像接口
                 // xhr2标准实现的FormData接口通过上传文件
                 var formdata = new FormData();
-                formdata.append('nickname', this.$store.state.nickname);
-                formdata.append('token', window.localStorage.token);
-                formdata.append('headImg', this.file);
+                formdata.append("nickname", this.$store.state.nickname);
+                formdata.append("token", window.localStorage.token);
+                formdata.append("headImg", this.file);
                 modifyAdministerInfo(formdata).then(res => {
                     console.log(res);
                 });
@@ -163,7 +181,7 @@ export default {
             this.file = e.target.files[0];
             // 图片预览
             this.$store.commit(
-                'setHeadimg',
+                "setHeadimg",
                 window.URL.createObjectURL(this.file)
             );
         },
@@ -199,7 +217,7 @@ export default {
             var bool = this.errTip.one && this.errTip.two && this.errTip.three;
             if (!bool) {
                 if (this.oldPswd == this.newPswd) {
-                    alert('新密码不能与旧密码相同');
+                    alert("新密码不能与旧密码相同");
                 }
                 // 发送原密码和新密码，原密码是否正确，不正确给提示
                 modifyPsw({
@@ -211,9 +229,9 @@ export default {
                         this.errTip.pswdErr = true;
                     } else if (res.result.status == 1) {
                         console.log(res.result.data);
-                        this.oldPswd = '';
-                        this.newPswd = '';
-                        this.confirmPswd = '';
+                        this.oldPswd = "";
+                        this.newPswd = "";
+                        this.confirmPswd = "";
                         this.showModifyPwOK = true;
                         this.countStart(this.countdown);
                     } else {
@@ -238,7 +256,7 @@ export default {
         },
         loginout: function() {
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                alert("游客无权操作");
                 return;
             }
             // 通知后台注销
@@ -246,7 +264,7 @@ export default {
                 if (res.stat) {
                     window.localStorage.clear();
                     this.$router.replace({
-                        path: '/login'
+                        path: "/login"
                     });
                 }
             });
@@ -256,10 +274,6 @@ export default {
         var _this = this;
         _this.showModifyPwOK = false;
         _this.visitedNum = 1;
-        // bus.$on('downloadInfo', function(res) {
-        //     _this.nickname = res.name;
-        //     _this.imgsrc = vars.url + res.img;
-        // });
     }
 };
 </script>
@@ -320,7 +334,7 @@ export default {
     text-align: center;
 }
 .edit-info .info-img:hover:before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
@@ -328,7 +342,7 @@ export default {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5) url('~@/assets/img/camera.png') center center
+    background: rgba(0, 0, 0, 0.5) url("~@/assets/img/camera.png") center center
         no-repeat;
     background-size: 41px 30px;
     cursor: pointer;
@@ -348,7 +362,7 @@ export default {
     line-height: 18px;
     color: #409eff;
     font-size: 16px;
-    background: url('~@/assets/img/edit.png') no-repeat left center;
+    background: url("~@/assets/img/edit.png") no-repeat left center;
     background-size: 16px 16px;
     cursor: pointer;
 }
@@ -362,7 +376,7 @@ export default {
     margin: 20px 0;
     position: relative;
 }
-.edit-username input[type='text'] {
+.edit-username input[type="text"] {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -378,7 +392,7 @@ export default {
     border-bottom: 1px solid #ededed;
     transition: border 0.2s ease-in 0s;
 }
-.edit-username input[type='text']:focus {
+.edit-username input[type="text"]:focus {
     color: #333;
     border-color: #409eff;
 }
@@ -426,7 +440,7 @@ export default {
 .modify-pswd dd {
     margin-top: 20px;
 }
-.modify-pswd dd input[type='password'] {
+.modify-pswd dd input[type="password"] {
     height: 45px;
     width: 100%;
     border-left: 0;
@@ -439,7 +453,7 @@ export default {
     margin: 0;
     transition: border 0.2s ease-in 0s;
 }
-.modify-pswd dd input[type='password']:focus {
+.modify-pswd dd input[type="password"]:focus {
     outline: none;
     border-bottom: 1px solid #409eff;
 }
@@ -449,12 +463,12 @@ export default {
     font-size: 12px;
     color: #fd5f39;
     text-align: left;
-    background: url('~@/assets/img/err.png') 0 center no-repeat;
+    background: url("~@/assets/img/err.png") 0 center no-repeat;
     background-size: 14px;
     padding-left: 20px;
     line-height: 22px;
 }
-.modify-pswd input[type='submit'] {
+.modify-pswd input[type="submit"] {
     text-align: center;
     width: 100%;
     height: 46px;
@@ -465,12 +479,12 @@ export default {
     border: 2px solid #409eff;
     border-radius: 3px;
 }
-.modify-pswd input[type='submit']:focus {
+.modify-pswd input[type="submit"]:focus {
     outline: none;
     background: #168e71;
     border-color: #168e71;
 }
-.modify-pswd input[type='submit']:hover {
+.modify-pswd input[type="submit"]:hover {
     background-color: rgb(32, 175, 166);
     border-color: rgb(32, 175, 166);
 }

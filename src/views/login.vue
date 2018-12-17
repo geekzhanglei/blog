@@ -3,25 +3,35 @@
         <div class="login-title">博客管理后台</div>
         <div class="login-panel" @keyup.13="loginConfirm()">
             <el-input class="login-name" v-model="loginname" placeholder="username" maxlength="14"></el-input>
-            <el-input class="login-pwd" v-model="loginpwd" placeholder="password" maxlength="12" type="password"></el-input>
+            <el-input
+                class="login-pwd"
+                v-model="loginpwd"
+                placeholder="password"
+                maxlength="12"
+                type="password"
+            ></el-input>
             <div class="btn-wrap">
                 <el-button class="login-submit left" type="primary" v-on:click="loginConfirm()">登录</el-button>
-                <el-button class="login-submit right" type="primary" v-on:click="visitorLogin()">游客登录</el-button>
+                <el-button
+                    class="login-submit right"
+                    type="primary"
+                    v-on:click="visitorLogin()"
+                >游客登录</el-button>
             </div>
             <div class="case-number" :class="{errTip:isErr}">{{tips}}</div>
         </div>
     </div>
 </template>
 <script>
-import { adminLogin, isLogin } from '@/assets/js/apis';
+import { adminLogin, isLogin } from "@/assets/js/apis";
 
 export default {
     data: function() {
         return {
-            loginname: '',
-            loginpwd: '',
+            loginname: "",
+            loginpwd: "",
             isErr: false,
-            tips: '内测，仅允许管理员登陆'
+            tips: "内测，仅允许管理员登陆"
         };
     },
     methods: {
@@ -36,27 +46,27 @@ export default {
                 }).then(res => {
                     if (res.stat) {
                         var storage = window.localStorage;
-                        storage.setItem('token', res.token);
-                        _this.loginname = '';
-                        _this.loginpwd = '';
+                        storage.setItem("token", res.token);
+                        _this.loginname = "";
+                        _this.loginpwd = "";
                         _this.$router.replace({
-                            path: 'admin'
+                            name: "admin"
                         });
                     } else {
                         _this.isErr = true;
-                        _this.tips = '账号或密码错误';
+                        _this.tips = "账号或密码错误";
                     }
                 });
             } else {
                 // 错误信息提示
                 this.isErr = true;
-                this.tips = '帐号或密码不能为空';
+                this.tips = "帐号或密码不能为空";
                 return;
             }
         },
         visitorLogin: function() {
             this.$router.replace({
-                path: '/admin'
+                name: "admin"
             });
         },
         init: function() {
@@ -66,13 +76,13 @@ export default {
                 isLogin({ token: window.localStorage.token }).then(res => {
                     if (res.stat) {
                         console.log(res.data);
-                        _this.loginname = '';
-                        _this.loginpwd = '';
+                        _this.loginname = "";
+                        _this.loginpwd = "";
                         this.$router.replace({
-                            path: 'admin'
+                            name: "admin"
                         });
                     } else {
-                        console.log('重新登陆');
+                        console.log("重新登陆");
                     }
                 });
             }
@@ -85,7 +95,7 @@ export default {
 </script>
 <style scoped>
 #login {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
 }
 #admin {
     font-size: 62.5%;

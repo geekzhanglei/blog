@@ -1,26 +1,39 @@
 <template>
-    <div class="list">
-        <div class="container">
-            <div v-for="(item,index) in items" :key="index">
-                <div class="col-md-12">
-                    <div class="articlelist">
-                        <h4>
-                            <router-link :to="{name:'article',params:{id:item.id}}" class=" article-l">{{item.title}}</router-link>
-                        </h4>
-                        <p v-html="item.introduction"></p>
-                        <p class="time">{{transferTime(item.createTime)}}</p>
+    <div>
+        <div class="list">
+            <div class="container">
+                <div v-for="(item,index) in items" :key="index">
+                    <div class="col-md-12">
+                        <div class="articlelist">
+                            <h4>
+                                <router-link
+                                    :to="{name:'article',params:{id:item.id}}"
+                                    class="article-l"
+                                >{{item.title}}</router-link>
+                            </h4>
+                            <p v-html="item.introduction"></p>
+                            <p class="time">{{transferTime(item.createTime)}}</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            <el-pagination
+                v-if="showPages"
+                class="blog-page"
+                background
+                @current-change="handleCurrentChange"
+                :current-page="curPage"
+                :page-size="perPage"
+                layout="total, prev, pager, next, jumper"
+                :total="total"
+            ></el-pagination>
         </div>
-        <el-pagination v-if="showPages" class="blog-page" background @current-change="handleCurrentChange" :current-page="curPage" :page-size="perPage" layout="total, prev, pager, next, jumper" :total="total">
-        </el-pagination>
     </div>
 </template>
 
 <script>
-import { getArticleList } from '@/assets/js/apis';
-import formatTime from '@/assets/js/utils';
+import { getArticleList } from "@/assets/js/apis";
+import formatTime from "@/assets/js/utils";
 
 export default {
     data() {
@@ -56,7 +69,7 @@ export default {
         },
         // 时间戳转换
         transferTime: function(unixTime) {
-            return formatTime(unixTime * 1000, 'yyyy年MM月dd日 hh:mm:ss');
+            return formatTime(unixTime * 1000, "yyyy年MM月dd日 hh:mm:ss");
         },
         // 分页方法
         handleCurrentChange(val) {

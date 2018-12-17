@@ -1,7 +1,9 @@
 <template>
     <el-container>
         <el-header style="height:4rem">
-            <div class="admin-title"><a href="https://blog.feroad.com">传送门</a></div>
+            <div class="admin-title">
+                <a href="https://blog.feroad.com">传送门</a>
+            </div>
             <div class="admin-info">
                 <div class="infos">
                     <img :src="imgsrc">
@@ -14,14 +16,23 @@
                             <router-link :to="{name: 'info'}" replace>设置</router-link>
                         </li>
                         <li role="separator" class="divider"></li>
-                        <li><a @click="loginout">退出登录</a></li>
+                        <li>
+                            <a @click="loginout">退出登录</a>
+                        </li>
                     </ul>
                 </div>
             </div>
         </el-header>
         <el-container class="main-wrap">
             <el-aside :width="asideWidth">
-                <el-menu default-active="3" class="el-menu-vertical" text-color="#fff" background-color="#2e363f" :router="true" :collapse="isCollapse">
+                <el-menu
+                    default-active="3"
+                    class="el-menu-vertical"
+                    text-color="#fff"
+                    background-color="#2e363f"
+                    :router="true"
+                    :collapse="isCollapse"
+                >
                     <el-menu-item index="info">
                         <i class="el-icon-service"></i>
                         <span slot="title">个人信息</span>
@@ -66,19 +77,17 @@
                 <router-view></router-view>
             </el-main>
         </el-container>
-
     </el-container>
-
 </template>
 <script>
-import { getAdminInfo, loginOut } from '@/assets/js/apis';
-import { mapState } from 'vuex';
+import { getAdminInfo, loginOut } from "@/assets/js/apis";
+import { mapState } from "vuex";
 
 export default {
     data() {
         return {
             isCollapse: false,
-            asideWidth: '200px',
+            asideWidth: "200px",
             articleAdm: false
         };
     },
@@ -94,10 +103,10 @@ export default {
         isSidebar: function() {
             if (this.isCollapse) {
                 this.isCollapse = false;
-                this.asideWidth = '200px';
+                this.asideWidth = "200px";
             } else {
                 this.isCollapse = true;
-                this.asideWidth = '64px';
+                this.asideWidth = "64px";
             }
         },
         getInfo: function() {
@@ -105,7 +114,7 @@ export default {
                 var data = res.result.data;
                 if (res.result.status == 1) {
                     this.$store.commit({
-                        type: 'setInfo',
+                        type: "setInfo",
                         nickname: data.nickname,
                         headimg: data.head_img
                     });
@@ -114,16 +123,16 @@ export default {
         },
         loginout: function() {
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                alert("游客无权操作");
                 return;
             }
             // 通知后台注销
             loginOut({ token: window.localStorage.token }).then(res => {
                 if (res.stat) {
                     // 清除本地token
-                    window.localStorage.removeItem('token');
+                    window.localStorage.removeItem("token");
                     this.$router.replace({
-                        path: '/login'
+                        path: "/login"
                     });
                 }
             });
@@ -135,9 +144,9 @@ export default {
     mounted: function() {
         this.init();
         // 跳转到文章发布页
-        if (this.$router.currentRoute.path === '/admin') {
+        if (this.$router.currentRoute.path === "/admin") {
             this.$router.replace({
-                path: '/admin/info'
+                name: "release"
             });
         }
     }

@@ -5,7 +5,7 @@ import Index from '@/views/index';
 import Article from '@/views/article';
 import About from '@/views/about';
 import Msg from '@/views/msg';
-import Login from '@/views/admin/login';
+import Login from '@/views/login';
 import Admin from '@/views/admin/admin';
 import AdminDelete from '@/views/admin/delete';
 import AdminRelease from '@/views/admin/release';
@@ -14,6 +14,10 @@ import AdminMsg from '@/views/admin/msg';
 import AdminInfo from '@/views/admin/info';
 import AdminOption from '@/views/admin/option';
 import NotFoundComponent from '@/components/common/NotFoundComponent';
+// 公共组件
+import Header from "@/components/common/header";
+import Footer from '@/components/common/footer';
+import Canvas from '@/components/common/canvas';
 
 Vue.use(Router);
 
@@ -24,25 +28,45 @@ export default new Router({
             // 首页即列表页
             path: '/',
             name: 'index',
-            component: Index
+            components: {
+                default: Index,
+                header: Header,
+                footer: Footer,
+                canvas: Canvas
+            }
         },
         {
             // 文章详情
             path: '/article/:id',
             name: 'article',
-            component: Article
+            components: {
+                default: Article,
+                header: Header,
+                footer: Footer,
+                canvas: Canvas
+            }
         },
         {
             // 微言大义
             path: '/msg',
             name: 'msg',
-            component: Msg
+            components: {
+                default: Msg,
+                header: Header,
+                footer: Footer,
+                canvas: Canvas
+            }
         },
         {
             // 关于
             path: '/about',
             name: 'about',
-            component: About
+            components: {
+                default: About,
+                header: Header,
+                footer: Footer,
+                canvas: Canvas
+            }
         },
         // admin部分
         {

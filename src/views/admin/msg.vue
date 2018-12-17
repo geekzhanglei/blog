@@ -1,68 +1,114 @@
 <template>
-    <div class="msg-wrap">
-        <div class="tips">
-            <span><i class="el-icon-news"></i> 动态管理-删除动态</span>
-        </div>
-        <div class="tips">
-            <span><i class="el-icon-menu"></i> 列表展示选项</span>
-        </div>
-        <el-row>
-            <el-col :span="12">
-                <el-col :span="12">是否分页</el-col>
+    <div>
+        <div class="msg-wrap">
+            <div class="tips">
+                <span>
+                    <i class="el-icon-news"></i> 动态管理-删除动态
+                </span>
+            </div>
+            <div class="tips">
+                <span>
+                    <i class="el-icon-menu"></i> 列表展示选项
+                </span>
+            </div>
+            <el-row>
                 <el-col :span="12">
-                    <el-switch v-model="selectedPage" @change="changeStatus(reqMsgData)" active-color="#13ce66" inactive-color="#ddd">
-                    </el-switch>
+                    <el-col :span="12">是否分页</el-col>
+                    <el-col :span="12">
+                        <el-switch
+                            v-model="selectedPage"
+                            @change="changeStatus(reqMsgData)"
+                            active-color="#13ce66"
+                            inactive-color="#ddd"
+                        ></el-switch>
+                    </el-col>
                 </el-col>
-            </el-col>
-            <el-col :span="12">
-                <el-col :span="12">每页条数</el-col>
-                <el-col :span="10">
-                    <el-input type="text" :disabled="!selectedPage" @input="changePageNum" placeholder="输入整数（默认5）"></el-input>
-                </el-col>
-            </el-col>
-        </el-row>
-        <el-row>
-            <el-col :offset="2" :span="22">
-                <el-col :span="3" :offset="2">数据搜索</el-col>
                 <el-col :span="12">
-                    <el-input type="text" @input="search" placeholder="请输入关键词（仅搜索当前页）"></el-input>
+                    <el-col :span="12">每页条数</el-col>
+                    <el-col :span="10">
+                        <el-input
+                            type="text"
+                            :disabled="!selectedPage"
+                            @input="changePageNum"
+                            placeholder="输入整数（默认5）"
+                        ></el-input>
+                    </el-col>
                 </el-col>
-            </el-col>
-        </el-row>
-        <div class="tips">
-            <span><i class="el-icon-tickets"></i> 列表</span>
+            </el-row>
+            <el-row>
+                <el-col :offset="2" :span="22">
+                    <el-col :span="3" :offset="2">数据搜索</el-col>
+                    <el-col :span="12">
+                        <el-input type="text" @input="search" placeholder="请输入关键词（仅搜索当前页）"></el-input>
+                    </el-col>
+                </el-col>
+            </el-row>
+            <div class="tips">
+                <span>
+                    <i class="el-icon-tickets"></i> 列表
+                </span>
+            </div>
+            <el-row>
+                <el-table
+                    :data="tableData"
+                    style="width: 100%"
+                    :default-sort="{prop: 'id', order: 'descending'}"
+                    :row-class-name="getRowClass"
+                >
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-table :data="props.row.reply">
+                                <el-table-column prop="rId" label="回复id"></el-table-column>
+                                <el-table-column prop="content" label="回复内容"></el-table-column>
+                                <el-table-column prop="replyUserName" label="作者"></el-table-column>
+                                <el-table-column prop="createTime" label="时间"></el-table-column>
+                            </el-table>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="id" label="ID" sortable width="80" align="center"></el-table-column>
+                    <el-table-column
+                        prop="content"
+                        label="评论"
+                        sortable
+                        fit
+                        align="center"
+                        show-overflow-tooltip
+                    ></el-table-column>
+                    <el-table-column prop="userName" label="作者" sortable width="150" align="center"></el-table-column>
+                    <el-table-column
+                        prop="createTime"
+                        label="时间"
+                        sortable
+                        width="180"
+                        align="center"
+                    ></el-table-column>
+                    <el-table-column label="操作" align="center" width="150">
+                        <template slot-scope="scope">
+                            <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handleDelete(scope.$index, scope.row)"
+                            >删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+            <el-pagination
+                v-if="showPages"
+                background
+                @current-change="handleCurrentChange"
+                :current-page="curPage"
+                :page-size="perPage"
+                layout="total, prev, pager, next, jumper"
+                :total="total"
+            ></el-pagination>
         </div>
-        <el-row>
-            <el-table :data="tableData" style="width: 100%" :default-sort="{prop: 'id', order: 'descending'}" :row-class-name="getRowClass">
-                <el-table-column type="expand">
-                    <template slot-scope="props">
-                        <el-table :data="props.row.reply">
-                            <el-table-column prop="rId" label="回复id"></el-table-column>
-                            <el-table-column prop="content" label="回复内容"></el-table-column>
-                            <el-table-column prop="replyUserName" label="作者"></el-table-column>
-                            <el-table-column prop="createTime" label="时间"></el-table-column>
-                        </el-table>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="id" label="ID" sortable width="80" align="center"></el-table-column>
-                <el-table-column prop="content" label="评论" sortable fit align="center" show-overflow-tooltip></el-table-column>
-                <el-table-column prop="userName" label="作者" sortable width="150" align="center"></el-table-column>
-                <el-table-column prop="createTime" label="时间" sortable width="180" align="center"></el-table-column>
-                <el-table-column label="操作" align="center" width="150">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
-        <el-pagination v-if="showPages" background @current-change="handleCurrentChange" :current-page="curPage" :page-size="perPage" layout="total, prev, pager, next, jumper" :total="total">
-        </el-pagination>
     </div>
 </template>
 <script>
-import { getAdminMsgList, deleteMsg } from '@/assets/js/apis';
-import formatTime from '@/assets/js/utils';
-import msgAndCommentsMixin from '@/assets/js/mixin';
+import { getAdminMsgList, deleteMsg } from "@/assets/js/apis";
+import formatTime from "@/assets/js/utils";
+import msgAndCommentsMixin from "@/assets/js/mixin";
 
 export default {
     mixins: [msgAndCommentsMixin],
@@ -72,7 +118,7 @@ export default {
     methods: {
         // 配合css选择性显示展开行图标
         getRowClass(row, index) {
-            let expandClass = row.row.reply.length ? '' : 'hide-expand';
+            let expandClass = row.row.reply.length ? "" : "hide-expand";
             return expandClass;
         },
         // 改变默认table显示行数
@@ -102,7 +148,7 @@ export default {
         },
         handleData(arr) {
             arr.forEach(item => {
-                this.$set(item, 'showMesg', false);
+                this.$set(item, "showMesg", false);
             });
             // 转换数据中所有unix时间戳
             this.transferTime(arr);
@@ -111,7 +157,7 @@ export default {
         // 删除留言
         handleDelete(index, row) {
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                alert("游客无权操作");
                 return;
             }
             this.tableData.splice(index, 1);
@@ -123,7 +169,7 @@ export default {
             for (i in curValue) {
                 if (curValue.hasOwnProperty(i)) {
                     switch (i) {
-                        case 'reply':
+                        case "reply":
                             // curValue[i] 动态下的回复数组
                             tmp = curValue[i];
                             for (j in tmp) {
@@ -131,7 +177,7 @@ export default {
 
                                 for (k in tmp[j]) {
                                     switch (k) {
-                                        case 'replyType': // 检测到这个字段不返回
+                                        case "replyType": // 检测到这个字段不返回
                                             break;
 
                                         default:
@@ -147,7 +193,7 @@ export default {
                                 }
                             }
                             break;
-                        case 'showMesg':
+                        case "showMesg":
                             break;
                         default:
                             tostr = curValue[i].toString();
@@ -162,10 +208,10 @@ export default {
         transferTime(obj) {
             obj.forEach((e, i, arr) => {
                 for (i in e) {
-                    if (i == 'createTime') {
-                        e[i] = formatTime(e[i] * 1000, 'yyyy/MM/dd hh:mm:ss');
+                    if (i == "createTime") {
+                        e[i] = formatTime(e[i] * 1000, "yyyy/MM/dd hh:mm:ss");
                     }
-                    if (i == 'reply' && e[i].length) {
+                    if (i == "reply" && e[i].length) {
                         this.transferTime(e[i]);
                     }
                 }
