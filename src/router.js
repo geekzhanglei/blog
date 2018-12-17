@@ -13,6 +13,7 @@ import AdminComments from '@/views/admin/comments';
 import AdminMsg from '@/views/admin/msg';
 import AdminInfo from '@/views/admin/info';
 import AdminOption from '@/views/admin/option';
+import NotFoundComponent from '@/components/common/NotFoundComponent';
 
 Vue.use(Router);
 
@@ -84,44 +85,12 @@ export default new Router({
                     component: AdminOption
                 }
             ]
+        },
+        {
+            path: '*',
+            component: NotFoundComponent
         }
-        // {
-        //     path: '/article',
-        //     name: 'article',
-        //     component: {
-        //         list: {
-        //             template: '<blog-articlelist></blog-articlelist>'
-        //         }
-        //     }
-        // },
-        // {
-        //     // 文章详情
-        //     path: '/article/:id',
-        //     name: 'articleid',
-        //     component: {
-        //         article: {
-        //             template: '<blog-article></blog-article>'
-        //         }
-        //     }
-        // },
-        // {
-        //     path: '/about',
-        //     name: 'about',
-        //     component: {
-        //         about: {
-        //             template: '<blog-about></blog-about>'
-        //         }
-        //     }
-        // },
-        // {
-        //     path: '/msg',
-        //     name: 'msg',
-        //     component: {
-        //         msg: {
-        //             template: '<blog-msg></blog-msg>'
-        //         }
-        //     }
-        // }
+
     ],
     scrollBehavior(to, from, savedPosition) {
         return {
@@ -129,15 +98,4 @@ export default new Router({
             y: 0
         };
     }
-    // routes: [
-    //     {
-    //         path: '/about',
-    //         name: 'about',
-    //         // route level code-splitting
-    //         // this generates a separate chunk (about.[hash].js) for this route
-    //         // which is lazy-loaded when the route is visited.
-    //         component: () =>
-    //             import(/* webpackChunkName: "about" */ './views/About.vue')
-    //     }
-    // ]
 });
