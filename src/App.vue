@@ -7,8 +7,6 @@
     </div>
 </template>
 <script>
-import "./assets/css/index.css";
-
 export default {
     mounted() {
         console.log(
@@ -26,4 +24,8 @@ export default {
     }
 };
 </script>
+<style>
+@import "./assets/css/index.css";
+</style>
+
 
