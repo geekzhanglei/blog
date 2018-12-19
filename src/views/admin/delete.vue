@@ -1,7 +1,9 @@
 <template>
     <div class="delete-wrap">
         <div class="tips">
-            <span><i class="el-icon-delete"></i> 删除文章-删除不需要的文章</span>
+            <span>
+                <i class="el-icon-delete"></i> 删除文章-删除不需要的文章
+            </span>
         </div>
         <ul class="manage-articles">
             <li v-for="(item,index) in items" :key="index">
@@ -18,7 +20,7 @@
         </div>
         <!-- dialog -->
         <el-dialog title="操作提示" :visible.sync="dialogVisible" width="30%">
-            <span>您确定要输出这篇文章么？</span>
+            <span>您确定要删除这篇文章么？</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="deleteArticle">确 定</el-button>
@@ -27,7 +29,7 @@
     </div>
 </template>
 <script>
-import { getArticleIntroList, deleteArticle } from '@/assets/js/apis';
+import { getArticleIntroList, deleteArticle } from "@/assets/js/apis";
 
 export default {
     data: function() {
@@ -69,7 +71,7 @@ export default {
         // 删除文章
         deleteArticle: function() {
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                alert("游客无权操作");
                 return;
             }
             if (this.deleteId == -1) {
@@ -93,12 +95,12 @@ export default {
         // 处理过长的文章简介
         handleIntro: function(inputHTML) {
             if (
-                typeof inputHTML === 'string' &&
+                typeof inputHTML === "string" &&
                 inputHTML.constructor === String
             ) {
                 if (inputHTML.length > 100) {
                     inputHTML = inputHTML.slice(0, 100);
-                    return inputHTML + ' ...';
+                    return inputHTML + " ...";
                 }
                 return inputHTML;
             }
@@ -112,6 +114,7 @@ export default {
     },
     mounted() {
         this.reqArticleList();
+        this.dialogVisible = true;
     }
 };
 </script>

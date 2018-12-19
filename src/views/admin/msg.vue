@@ -80,7 +80,7 @@
                         <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)"
+                            @click="triggerModal(scope.$index, scope.row)"
                         >删除</el-button>
                     </template>
                 </el-table-column>
@@ -95,6 +95,14 @@
             layout="total, prev, pager, next, jumper"
             :total="total"
         ></el-pagination>
+        <!-- dialog -->
+        <el-dialog title="操作提示" :visible.sync="dialogVisible" width="30%">
+            <span>您确定要删除这条评论么？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="handleDelete">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -105,7 +113,10 @@ import msgAndCommentsMixin from "@/assets/js/mixin";
 export default {
     mixins: [msgAndCommentsMixin],
     data: function() {
-        return {};
+        return {
+            dialogVisible: false,
+            deleteCont: {}
+        };
     },
     methods: {
         // 配合css选择性显示展开行图标
@@ -146,15 +157,24 @@ export default {
             this.transferTime(arr);
             return arr;
         },
-        // 删除留言
-        handleDelete(index, row) {
+        triggerModal: function(index, row) {
             if (!window.localStorage.token) {
                 alert("游客无权操作");
                 return;
             }
-            this.tableData.splice(index, 1);
+            this.dialogVisible = true;
+            this.deleteCont = {
+                index: index,
+                row: row
+            };
+        },
+        // 删除留言
+        handleDelete() {
+            this.tableData.splice(this.deleteCont.index, 1);
             // 再请求删除留言接口
-            deleteMsg(row.id, { token: window.localStorage.token });
+            deleteMsg(this.deleteCont.row.id, {
+                token: window.localStorage.token
+            });
         },
         traversalObj: function(curValue, searchStr) {
             var i, j, k, tostr, tmp;
