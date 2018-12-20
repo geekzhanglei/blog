@@ -90,7 +90,8 @@
 <script>
 import { loginOut, modifyPsw, modifyAdministerInfo } from "@/assets/js/apis";
 import { mapState } from "vuex";
-let Base64 = require("js-base64").Base64;
+import { Message } from "element-ui";
+const Base64 = require("js-base64").Base64;
 
 export default {
     data: function() {
@@ -256,7 +257,10 @@ export default {
         },
         loginout: function() {
             if (!window.localStorage.token) {
-                alert("游客无权操作");
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
                 return;
             }
             // 通知后台注销

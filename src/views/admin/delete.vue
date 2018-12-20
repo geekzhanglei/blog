@@ -30,6 +30,7 @@
 </template>
 <script>
 import { getArticleIntroList, deleteArticle } from "@/assets/js/apis";
+import { Message } from "element-ui";
 
 export default {
     data: function() {
@@ -71,7 +72,10 @@ export default {
         // 删除文章
         deleteArticle: function() {
             if (!window.localStorage.token) {
-                alert("游客无权操作");
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
                 return;
             }
             if (this.deleteId == -1) {
@@ -114,7 +118,6 @@ export default {
     },
     mounted() {
         this.reqArticleList();
-        this.dialogVisible = true;
     }
 };
 </script>

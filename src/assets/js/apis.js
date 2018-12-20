@@ -32,7 +32,7 @@ axios.interceptors.request.use(
     request => {
         // 可以显示loading
         // Qs对参数的格式化在拦截器中处理
-        if (request.method === 'post'&&(!request.data instanceof FormData)) {
+        if (request.method === 'post' && (!request.data instanceof FormData)) {
             request.data = Qs.stringify(request.data);
             return request;
         }

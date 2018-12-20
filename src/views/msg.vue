@@ -6,12 +6,22 @@
             </div>
             <div class="msg-cont">
                 <div class="msg-input clearfix">
-                    <el-input type="textarea" :rows="5" placeholder="有什么想说呢" v-model="inputMsg" maxlength="400">
-                    </el-input>
-                    <el-button type="button" class="btn btn-default" data-toggle="modal" data-target="#inputNameModal" @click='dialogVisible = true'>评论一下</el-button>
+                    <el-input
+                        type="textarea"
+                        :rows="5"
+                        placeholder="有什么想说呢"
+                        v-model="inputMsg"
+                        maxlength="400"
+                    ></el-input>
+                    <el-button
+                        type="button"
+                        class="btn btn-default"
+                        data-toggle="modal"
+                        data-target="#inputNameModal"
+                        @click="dialogVisible = true"
+                    >评论一下</el-button>
                 </div>
-                <div class=" msg-split">
-                </div>
+                <div class="msg-split"></div>
                 <div v-if="showMsgCont" class="msg-comment">
                     <div class="comment-header">
                         <h4>最新动态</h4>
@@ -25,29 +35,64 @@
                                 </div>
                                 <p class="comment">{{item.content}}</p>
                                 <div class="action clearfix">
-                                    <a href="javascript:;" class="answer" v-on:click="displayInput(item)">{{item.isAnswer}}</a>
-                                    <a href="javascript:;" class="unfold-answer" v-show="item.reply.length === 0 ?false:true" v-on:click="displayAnswers(item)">{{item.isUnfoldAnswers}}({{item.reply.length}})</a>
+                                    <a
+                                        href="javascript:;"
+                                        class="answer"
+                                        v-on:click="displayInput(item)"
+                                    >{{item.isAnswer}}</a>
+                                    <a
+                                        href="javascript:;"
+                                        class="unfold-answer"
+                                        v-show="item.reply.length === 0 ?false:true"
+                                        v-on:click="displayAnswers(item)"
+                                    >{{item.isUnfoldAnswers}}({{item.reply.length}})</a>
                                     <span class="expression">
-                                        <i class="el-icon-star-off" :class="{visited:item.isVisited}" @click.stop="support(item)"></i>
+                                        <i
+                                            class="el-icon-star-off"
+                                            :class="{visited:item.isVisited}"
+                                            @click.stop="support(item)"
+                                        ></i>
                                         <i v-if="item.agrees != 0">{{item.agrees}}</i>
                                     </span>
                                 </div>
                             </div>
                             <div class="write-answer" v-show="item.isShowInput">
                                 <div class="msg-input clearfix">
-                                    <el-input type="textarea" :rows="3" placeholder="这里可以评论动态" v-model="item.replyCont" maxlength="200">
-                                    </el-input>
+                                    <el-input
+                                        type="textarea"
+                                        :rows="3"
+                                        placeholder="这里可以评论动态"
+                                        v-model="item.replyCont"
+                                        maxlength="200"
+                                    ></el-input>
                                     <div class="replyWrap clearfix">
                                         <span>昵称：</span>
-                                        <el-input type="text" v-model="item.replyName" maxlength="10" v-bind:placeholder="phReplyCont"></el-input>
-                                        <el-button size="small" type="button" v-on:click="addReply(item.id,item)">回复一下</el-button>
+                                        <el-input
+                                            type="text"
+                                            v-model="item.replyName"
+                                            maxlength="10"
+                                            v-bind:placeholder="phReplyCont"
+                                        ></el-input>
+                                        <el-button
+                                            size="small"
+                                            type="button"
+                                            v-on:click="addReply(item.id,item)"
+                                        >回复一下</el-button>
                                         <span class="replyErrTip">{{item.replyErr}}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="answers" v-show="item.isShowAnswers" v-for="(answer,i) in item.reply" :key="i">
+                            <div
+                                class="answers"
+                                v-show="item.isShowAnswers"
+                                v-for="(answer,i) in item.reply"
+                                :key="i"
+                            >
                                 <div class="clearfix">
-                                    <span v-if="answer.replyType==='1'" class="uid">{{answer.replyUserName}}</span>
+                                    <span
+                                        v-if="answer.replyType==='1'"
+                                        class="uid"
+                                    >{{answer.replyUserName}}</span>
                                     <div v-else>
                                         <span class="uid">{{answer.replyUserName}}</span>
                                         <span class="uid reply">回复:</span>
@@ -57,61 +102,102 @@
                                 </div>
                                 <p class="comment">{{answer.content}}</p>
                                 <div class="action clearfix">
-                                    <a href="javascript:;" v-on:click="displayReplyInput(item,i)" class="answer">{{item.reply[i].isAnswer}}</a>
+                                    <a
+                                        href="javascript:;"
+                                        v-on:click="displayReplyInput(item,i)"
+                                        class="answer"
+                                    >{{item.reply[i].isAnswer}}</a>
                                     <a v-if="answer.agrees != 0">{{answer.agrees}}</a>
-                                    <a class="glyphicon glyphicon-thumbs-up" :class="{ansVisited:answer.isVisited}" @click.stop="support(answer)"></a>
+                                    <a
+                                        class="glyphicon glyphicon-thumbs-up"
+                                        :class="{ansVisited:answer.isVisited}"
+                                        @click.stop="support(answer)"
+                                    ></a>
                                 </div>
                                 <div class="write-answer" v-show="answer.isShowReplyInput">
                                     <div class="msg-input clearfix">
-                                        <el-input type="textarea" :rows="2" placeholder="回复本条评论" v-model="item.replyCont" maxlength="100"></el-input>
+                                        <el-input
+                                            type="textarea"
+                                            :rows="2"
+                                            placeholder="回复本条评论"
+                                            v-model="item.replyCont"
+                                            maxlength="100"
+                                        ></el-input>
                                         <div class="replyWrap clearfix">
                                             <span>昵称：</span>
-                                            <el-input type="text" v-model="item.replyName" maxlength="10" v-bind:placeholder="phcont"></el-input>
-                                            <el-button size="small" type="button" v-on:click="addReply(item.id,item,i)">回复一下</el-button>
+                                            <el-input
+                                                type="text"
+                                                v-model="item.replyName"
+                                                maxlength="10"
+                                                v-bind:placeholder="phcont"
+                                            ></el-input>
+                                            <el-button
+                                                size="small"
+                                                type="button"
+                                                v-on:click="addReply(item.id,item,i)"
+                                            >回复一下</el-button>
                                             <span class="replyErrTip">{{item.replyErr}}</span>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
                 </div>
-                <el-pagination v-if="showPages" class="blog-page" background @current-change="handleCurrentChange" :current-page="pagingData.curPage" :page-size="pagingData.pageSize" layout="total, prev, pager, next, jumper" :total="pagingData.total">
-                </el-pagination>
+                <el-pagination
+                    v-if="showPages"
+                    class="blog-page"
+                    background
+                    @current-change="handleCurrentChange"
+                    :current-page="pagingData.curPage"
+                    :page-size="pagingData.pageSize"
+                    layout="total, prev, pager, next, jumper"
+                    :total="pagingData.total"
+                ></el-pagination>
             </div>
         </div>
         <!-- Dialog -->
-        <el-dialog title="请留下您的大名" :visible.sync="dialogVisible" width="35%" @close="closeDialog()">
+        <el-dialog
+            title="请留下您的大名"
+            :visible.sync="dialogVisible"
+            width="18rem"
+            @close="closeDialog()"
+        >
             <el-input type="text" v-model="inputName" maxlength="10" :placeholder="phcont"></el-input>
             <span class="errorTips">{{errTips}}</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="sendComment()" show-close close-on-click-modal close-on-press-escape>确 定</el-button>
+                <el-button
+                    type="primary"
+                    @click="sendComment()"
+                    show-close
+                    close-on-click-modal
+                    close-on-press-escape
+                >确 定</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 <script>
-import { getMsgList, addMsg, addReplyMsg, msgSupport } from '@/assets/js/apis';
-import formatTime from '@/assets/js/utils';
-import Vue from 'vue';
+import { getMsgList, addMsg, addReplyMsg, msgSupport } from "@/assets/js/apis";
+import formatTime from "@/assets/js/utils";
+import Vue from "vue";
 
 export default {
     data: function() {
         return {
             //输入内容与名字
-            inputMsg: '',
-            inputName: '',
+            inputMsg: "",
+            inputName: "",
             // 显示留言列表
             showMsgCont: true,
             // 留言列表
             list: [],
             // 非法留言提示
-            errTips: '',
+            errTips: "",
             // 留言和回复的默认用户名
-            phcont: '默认值',
-            phReplyCont: '默认值',
+            phcont: "默认值",
+            phReplyCont: "默认值",
             // 每页默认条数
             pagesize: 3,
             // 分页组件数据
@@ -153,7 +239,7 @@ export default {
                 res => {
                     this.showMsgCont = false;
                     this.showPages = false;
-                    console.log('接口请求失败，错误码：' + err.status);
+                    console.log("接口请求失败，错误码：" + err.status);
                 }
             );
         },
@@ -164,12 +250,12 @@ export default {
 
         // 回复按钮
         displayInput: function(item) {
-            if (item.isAnswer === '回复') {
+            if (item.isAnswer === "回复") {
                 this.closeAnswerList(item);
-                item.isAnswer = '取消回复';
+                item.isAnswer = "取消回复";
                 item.isShowInput = true;
             } else {
-                item.isAnswer = '回复';
+                item.isAnswer = "回复";
                 item.isShowInput = false;
             }
         },
@@ -177,25 +263,25 @@ export default {
         displayReplyInput: function(item, index) {
             if (item.reply[index].isShowReplyInput === false) {
                 // 关闭回复留言框
-                item.isAnswer = '回复';
+                item.isAnswer = "回复";
                 item.isShowInput = false;
                 this.closeAnswerList(item);
                 // 自身逻辑
-                item.reply[index].isAnswer = '取消回复';
+                item.reply[index].isAnswer = "取消回复";
                 item.reply[index].isShowReplyInput = true;
             } else {
                 item.reply[index].isShowReplyInput = false;
-                item.reply[index].isAnswer = '回复';
+                item.reply[index].isAnswer = "回复";
             }
         },
         // 展开回复列表
         displayAnswers: function(item) {
-            if (item.isUnfoldAnswers === '查看回复') {
+            if (item.isUnfoldAnswers === "查看回复") {
                 this.closeAnswerList(item);
-                item.isUnfoldAnswers = '收起回复';
+                item.isUnfoldAnswers = "收起回复";
                 item.isShowAnswers = true;
             } else {
-                item.isUnfoldAnswers = '查看回复';
+                item.isUnfoldAnswers = "查看回复";
                 item.isShowAnswers = false;
             }
         },
@@ -205,31 +291,31 @@ export default {
             if (_l) {
                 for (var _q = 0; _q < _l; _q++) {
                     item.reply[_q].isShowReplyInput = false;
-                    item.reply[_q].isAnswer = '回复';
+                    item.reply[_q].isAnswer = "回复";
                 }
             }
-            item.replyName = '';
-            item.replyCont = '';
+            item.replyName = "";
+            item.replyCont = "";
         },
 
         // 时间戳转换
         transferTime: function(unixTime) {
-            return formatTime(unixTime * 1000, 'yyyy年MM月dd日 hh:mm:ss');
+            return formatTime(unixTime * 1000, "yyyy年MM月dd日 hh:mm:ss");
         },
         // 添加回复
         addReply: function(id, item, index) {
             var _this = this;
             var data = {};
-            item.replyErr = '';
-            if (item.replyCont === '') {
-                item.replyErr = '总得写点啥吧';
+            item.replyErr = "";
+            if (item.replyCont === "") {
+                item.replyErr = "总得写点啥吧";
                 return;
             }
             // 默认名字
-            if (item.replyName === '') {
+            if (item.replyName === "") {
                 item.replyName = this.phcont;
             }
-            if (typeof index !== 'undefined') {
+            if (typeof index !== "undefined") {
                 data = {
                     username: item.replyName,
                     content: item.replyCont,
@@ -249,8 +335,8 @@ export default {
                 };
             }
             addReplyMsg(data).then(res => {
-                item.replyName = '';
-                item.replyCont = '';
+                item.replyName = "";
+                item.replyCont = "";
                 // 刷新列表
                 this.reqMsgData(this.pagingData.curPage);
             });
@@ -258,7 +344,7 @@ export default {
         // 增加动态
         sendComment: function() {
             var _this = this;
-            this.errTips = '';
+            this.errTips = "";
 
             var commentLength = _this.inputMsg.length;
             var comNameLength = _this.inputName.length;
@@ -267,12 +353,12 @@ export default {
                 commentLength > 400 ||
                 comNameLength > 10
             ) {
-                this.errTips = '总得写点啥吧';
+                this.errTips = "总得写点啥吧";
                 return;
             }
 
             // 默认名字为东方三侠
-            if (this.inputName === '') {
+            if (this.inputName === "") {
                 this.inputName = this.phcont;
             }
             addMsg({
@@ -280,7 +366,7 @@ export default {
                 username: this.inputName
             }).then(res => {
                 // 清空留言输入框
-                this.inputMsg = '';
+                this.inputMsg = "";
                 // 刷新列表
                 this.reqMsgData(this.pagingData.curPage);
                 // 成功之后关闭模态框
@@ -289,7 +375,7 @@ export default {
         },
         // 关闭对话框回调：清除错误提示
         closeDialog() {
-            this.errTips = '';
+            this.errTips = "";
         },
         // 点赞
         support: function(item) {
@@ -304,17 +390,17 @@ export default {
             if (item.isVisited) {
                 item.isVisited = false;
                 if (item.commentId) {
-                    window.localStorage.removeItem('msgMarkRid' + item.rId);
+                    window.localStorage.removeItem("msgMarkRid" + item.rId);
                 } else {
-                    window.localStorage.removeItem('msgMarkId' + item.id);
+                    window.localStorage.removeItem("msgMarkId" + item.id);
                 }
             } else {
                 item.isVisited = true;
                 // 根据commentId判断是回复的回复还是评论的回复
                 if (item.commentId) {
-                    storage.setItem('msgMarkRid' + item.rId, item.rId);
+                    storage.setItem("msgMarkRid" + item.rId, item.rId);
                 } else {
-                    storage.setItem('msgMarkId' + item.id, item.id);
+                    storage.setItem("msgMarkId" + item.id, item.id);
                 }
             }
             item.agrees = Number(item.agrees);
@@ -351,39 +437,39 @@ export default {
 
             // 初始化每个评论下会用到的私有属性
             for (i = 0; i < listLen; i++) {
-                Vue.set(this.list[i], 'isAnswer', '回复');
-                Vue.set(this.list[i], 'isUnfoldAnswers', '查看回复');
-                Vue.set(this.list[i], 'isShowInput', false);
-                Vue.set(this.list[i], 'isShowAnswers', false);
-                Vue.set(this.list[i], 'replyErr', '');
-                Vue.set(this.list[i], 'replyName', '');
-                Vue.set(this.list[i], 'replyCont', '');
-                Vue.set(this.list[i], 'isVisited', false);
+                Vue.set(this.list[i], "isAnswer", "回复");
+                Vue.set(this.list[i], "isUnfoldAnswers", "查看回复");
+                Vue.set(this.list[i], "isShowInput", false);
+                Vue.set(this.list[i], "isShowAnswers", false);
+                Vue.set(this.list[i], "replyErr", "");
+                Vue.set(this.list[i], "replyName", "");
+                Vue.set(this.list[i], "replyCont", "");
+                Vue.set(this.list[i], "isVisited", false);
                 // 回复用到的私有属性，开启关闭回复框用
                 replyLen = this.list[i].reply.length;
                 if (replyLen) {
                     for (j = 0; j < replyLen; j++) {
                         Vue.set(
                             this.list[i].reply[j],
-                            'isShowReplyInput',
+                            "isShowReplyInput",
                             false
                         );
-                        Vue.set(this.list[i].reply[j], 'isAnswer', '回复');
-                        Vue.set(this.list[i].reply[j], 'isVisited', false);
+                        Vue.set(this.list[i].reply[j], "isAnswer", "回复");
+                        Vue.set(this.list[i].reply[j], "isVisited", false);
                     }
                 }
             }
             // 判断当前游客有的点赞记录
             for (i = 0; i < listLen; i++) {
                 id = this.list[i].id;
-                if (id == window.localStorage['msgMarkId' + id]) {
+                if (id == window.localStorage["msgMarkId" + id]) {
                     this.list[i].isVisited = true;
                 }
                 replyLen = this.list[i].reply.length;
                 if (replyLen) {
                     for (j = 0; j < replyLen; j++) {
                         rId = this.list[i].reply[j].rId;
-                        if (rId == window.localStorage['msgMarkRid' + rId]) {
+                        if (rId == window.localStorage["msgMarkRid" + rId]) {
                             this.list[i].reply[j].isVisited = true;
                         }
                     }
@@ -401,7 +487,7 @@ export default {
     margin-bottom: 20px;
 }
 .clearfix:after {
-    content: '';
+    content: "";
     height: 0;
     line-height: 0;
     display: block;
@@ -544,3 +630,18 @@ p {
     text-align: center;
 }
 </style>
+<style>
+@media screen and (max-width: 900px) {
+    .el-pagination .btn-prev,
+    .el-pagination .btn-next,
+    .el-pagination .el-pager {
+        display: none;
+    }
+}
+@media screen and (max-width: 500px) {
+    .container .msg-cont {
+        margin: 1rem;
+    }
+}
+</style>
+

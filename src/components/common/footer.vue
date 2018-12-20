@@ -24,6 +24,11 @@ export default {};
     margin: 0;
     font-weight: normal;
 }
+@media screen and (max-width: 900px) {
+    .footer {
+        display: none;
+    }
+}
 </style>
 
 

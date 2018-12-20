@@ -119,7 +119,7 @@ export default {
 }
 
 .login-panel {
-    width: 20%;
+    width: 18rem;
     margin-top: 2rem;
     padding: 3rem;
     border-radius: 0.5rem;

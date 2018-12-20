@@ -1,7 +1,9 @@
 <template>
     <div class="admin-options-wrap">
         <div class="tips">
-            <span><i class="el-icon-menu"></i> 常用选项-博客基本选项设置</span>
+            <span>
+                <i class="el-icon-menu"></i> 常用选项-博客基本选项设置
+            </span>
         </div>
         <div class="admin-options">
             <el-button class="option-save" type="primary" @click="saveConfig" plain>保存设置</el-button>
@@ -9,38 +11,62 @@
             <span v-if="saveConOK" class="save-config-ok">保存成功了</span>
         </div>
         <div class="tips">
-            <span><i class="el-icon-setting"></i> 文章列表设置</span>
+            <span>
+                <i class="el-icon-setting"></i> 文章列表设置
+            </span>
         </div>
         <el-row class="form-inline">
             <el-col :span="12">
                 <el-col :span="12">是否分页</el-col>
                 <el-col :span="12">
-                    <el-switch v-model="selectedArtPage" active-color="#13ce66" inactive-color="#ddd">
-                    </el-switch>
+                    <el-switch
+                        v-model="selectedArtPage"
+                        active-color="#13ce66"
+                        inactive-color="#ddd"
+                    ></el-switch>
                 </el-col>
             </el-col>
             <el-col :span="12">
                 <el-col :span="12">每页条数</el-col>
                 <el-col :span="10">
-                    <el-input type="text" id="pagesize1" class="form-control" :disabled="!selectedArtPage" @input="changePageNum($event,1)" placeholder="输入整数（默认5）"></el-input>
+                    <el-input
+                        type="text"
+                        id="pagesize1"
+                        class="form-control"
+                        :disabled="!selectedArtPage"
+                        @input="changePageNum($event,1)"
+                        placeholder="输入整数（默认5）"
+                    ></el-input>
                 </el-col>
             </el-col>
         </el-row>
         <div class="tips">
-            <span><i class="el-icon-setting"></i> 留言板设置</span>
+            <span>
+                <i class="el-icon-setting"></i> 留言板设置
+            </span>
         </div>
         <el-row class="form-inline">
             <el-col :span="12">
                 <el-col :span="12">是否分页</el-col>
                 <el-col :span="12">
-                    <el-switch v-model="selectedMsgPage" active-color="#13ce66" inactive-color="#ddd">
-                    </el-switch>
+                    <el-switch
+                        v-model="selectedMsgPage"
+                        active-color="#13ce66"
+                        inactive-color="#ddd"
+                    ></el-switch>
                 </el-col>
             </el-col>
             <el-col :span="12">
                 <el-col :span="12">每页条数</el-col>
                 <el-col :span="10">
-                    <el-input type="text" id="msgAdminInput" class="form-control" :disabled="!selectedMsgPage" @input="changePageNum($event,2)" placeholder="输入整数（默认5）"></el-input>
+                    <el-input
+                        type="text"
+                        id="msgAdminInput"
+                        class="form-control"
+                        :disabled="!selectedMsgPage"
+                        @input="changePageNum($event,2)"
+                        placeholder="输入整数（默认5）"
+                    ></el-input>
                 </el-col>
             </el-col>
         </el-row>
@@ -64,7 +90,8 @@
 import {
     setDefaultArticlePages,
     setDefaultCommentInfos
-} from '@/assets/js/apis';
+} from "@/assets/js/apis";
+import { Message } from "element-ui";
 
 export default {
     data: function() {
@@ -73,8 +100,8 @@ export default {
             selectedMsgPage: 0,
             artPageSize: 5,
             msgPageSize: 5,
-            msgNickname: '管理员',
-            replyNickname: '小管理员',
+            msgNickname: "管理员",
+            replyNickname: "小管理员",
             saveConErr: false,
             saveConOK: false
         };
@@ -100,7 +127,10 @@ export default {
         },
         saveConfig: function() {
             if (!window.localStorage.token) {
-                alert('游客无权操作');
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
                 return;
             }
             this.modifyArtInfo();
@@ -115,7 +145,7 @@ export default {
                 perpage: this.artPageSize
             }).then(res => {
                 if (res.result.status) {
-                    console.log('文章列表设置成功，返回：' + res.result.data);
+                    console.log("文章列表设置成功，返回：" + res.result.data);
                     this.saveConErr = false;
                     this.saveConOK = true;
                 } else {
@@ -126,10 +156,10 @@ export default {
         },
         modifyMsgInfo: function() {
             if (!this.replyNickname) {
-                this.replyNickname = '许攸';
+                this.replyNickname = "许攸";
             }
             if (!this.msgNickname) {
-                this.msgNickname = '荀彧';
+                this.msgNickname = "荀彧";
             }
             // 更新留言板接口数据
             setDefaultCommentInfos({
@@ -140,7 +170,7 @@ export default {
                 defaultReplyName: this.replyNickname
             }).then(res => {
                 if (res.result.status) {
-                    console.log('留言板内容设置成功，返回：' + res.result.data);
+                    console.log("留言板内容设置成功，返回：" + res.result.data);
                     this.saveConOK = true;
                     this.saveConErr = false;
                 } else {

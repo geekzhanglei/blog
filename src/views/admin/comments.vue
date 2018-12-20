@@ -112,6 +112,7 @@
 import { deleteComms, getArticleListWithMark } from "@/assets/js/apis";
 import formatTime from "@/assets/js/utils";
 import msgAndCommentsMixin from "@/assets/js/mixin";
+import { Message } from "element-ui";
 
 export default {
     mixins: [msgAndCommentsMixin],
@@ -128,7 +129,10 @@ export default {
         },
         triggerModal: function(index, row) {
             if (!window.localStorage.token) {
-                alert("游客无权操作");
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
                 return;
             }
             this.dialogVisible = true;

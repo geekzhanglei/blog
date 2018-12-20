@@ -82,6 +82,7 @@
 <script>
 import { getAdminInfo, loginOut } from "@/assets/js/apis";
 import { mapState } from "vuex";
+import { Message } from "element-ui";
 
 export default {
     data() {
@@ -123,7 +124,10 @@ export default {
         },
         loginout: function() {
             if (!window.localStorage.token) {
-                alert("游客无权操作");
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
                 return;
             }
             // 通知后台注销

@@ -11,8 +11,7 @@
         <el-row>
             <el-input type="textarea" :rows="3" v-model="digest" placeholder="请输入摘要(必填)"></el-input>
         </el-row>
-        <mavon-editor @imgAdd="$imgAdd" ref="md"></mavon-editor>
-        <el-button class="commit" type="primary" @click="saveArticle()" plain>确认发表</el-button>
+        <mavon-editor ishljs @imgAdd="$imgAdd" ref="md" @save="saveArticle"></mavon-editor>
     </div>
 </template>
 <script>
@@ -20,6 +19,7 @@ import Vue from "vue";
 import mavonEditor from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import { releaseArt, markdownImgUpload } from "@/assets/js/apis";
+import { Message } from "element-ui";
 
 Vue.use(mavonEditor);
 export default {
@@ -61,26 +61,21 @@ export default {
                 /* 2.2.1 */
                 subfield: true, // 单双栏模式
                 preview: true // 预览
-            },
-            mdInput: "",
-            htmlInput: ""
+            }
         };
     },
     methods: {
-        commitHtml(a, b) {
-            this.htmlInput = b;
-        },
-        commit() {
-            this.saveArticle();
-        },
-        saveArticle: function() {
-            var isEmpty = this.title && this.digest && this.mdInput;
-            if (!window.localStorage.token) {
-                alert("游客无权操作");
-                return;
-            }
+        saveArticle(value, render) {
+            var isEmpty = this.title && this.digest && value;
+            // if (!window.localStorage.token) {
+            //     this.$message({
+            //         message: "游客无权操作，请登录后重试",
+            //         type: "error"
+            //     });
+            //     return;
+            // }
             if (!isEmpty) {
-                // 弹出框
+                this.$message.warning("注意！必填项不可为空");
                 return;
             }
             // 上传文章
@@ -89,16 +84,18 @@ export default {
                 username: this.$store.state.nickname,
                 title: this.title,
                 introduction: this.digest,
-                content: this.htmlInput
+                content: render
             }).then(res => {
                 if (res.result.status) {
                     // 清空输入
                     this.title = "";
                     this.digest = "";
-                    this.mdInput = "";
                 } else {
                     if (res.result.data === "没有token值") {
-                        alert("游客无权操作");
+                        this.$message({
+                            message: "游客无权操作，请登录后重试",
+                            type: "error"
+                        });
                         return;
                     }
                 }

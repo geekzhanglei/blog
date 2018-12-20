@@ -3,28 +3,49 @@ body {
     margin: 0;
     padding: 0;
 }
+
 html {
     height: 100%;
 }
+
 body {
     min-height: 100%;
     position: relative;
 }
+
 #app {
     min-height: 100%;
     padding-bottom: 50px;
 }
+
 .container {
     width: 80%;
     margin: 2rem auto;
 }
+
+@media screen and (max-width:900px) {
+    .container {
+        width: 90%;
+        margin: 2rem auto;
+    }
+}
+
+@media screen and (max-width:500px) {
+    .container {
+        width: 95%;
+        margin: 2rem auto;
+    }
+}
+
 a {
     text-decoration: none;
 }
+
 p {
     padding: 0;
     margin: 0;
 }
+
 dd {
     margin: 0;
 }
