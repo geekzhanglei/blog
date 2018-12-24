@@ -179,6 +179,7 @@ export default {
             deleteMsg(this.deleteCont.row.id, {
                 token: window.localStorage.token
             });
+            this.dialogVisible = false;
         },
         traversalObj: function(curValue, searchStr) {
             var i, j, k, tostr, tmp;

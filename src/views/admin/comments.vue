@@ -151,6 +151,7 @@ export default {
                 } else {
                     console.log("该条目已删除，不可重复删除");
                 }
+                this.dialogVisible = false;
             });
         },
         requestArticle: function(e = 1) {

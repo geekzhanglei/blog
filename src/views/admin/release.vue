@@ -11,7 +11,7 @@
         <el-row>
             <el-input type="textarea" :rows="3" v-model="digest" placeholder="请输入摘要(必填)"></el-input>
         </el-row>
-        <mavon-editor ishljs @imgAdd="$imgAdd" ref="md" @save="saveArticle"></mavon-editor>
+        <mavon-editor isHljs="true" @imgAdd="$imgAdd" ref="md" @save="saveArticle"></mavon-editor>
     </div>
 </template>
 <script>
@@ -67,13 +67,13 @@ export default {
     methods: {
         saveArticle(value, render) {
             var isEmpty = this.title && this.digest && value;
-            // if (!window.localStorage.token) {
-            //     this.$message({
-            //         message: "游客无权操作，请登录后重试",
-            //         type: "error"
-            //     });
-            //     return;
-            // }
+            if (!window.localStorage.token) {
+                this.$message({
+                    message: "游客无权操作，请登录后重试",
+                    type: "error"
+                });
+                return;
+            }
             if (!isEmpty) {
                 this.$message.warning("注意！必填项不可为空");
                 return;
