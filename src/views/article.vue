@@ -584,14 +584,14 @@ p.subhead span {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+.article code {
+    white-space: normal;
+    word-break: break-all;
+}
 @media screen and (max-width: 900px) {
     .article .post-abs,
     .article .post-cont {
         margin: 0.5rem 1rem;
-    }
-    .article code {
-        white-space: normal;
-        word-break: break-all;
     }
 }
 </style>

@@ -107,8 +107,7 @@ export default {
         };
     },
     methods: {
-        changePageNum: function(e, n) {
-            var value = e.target.value;
+        changePageNum: function(value, n) {
             // 判断必须是整数
             if (parseInt(value) == value && value > 0) {
                 if (n == 1) {
@@ -118,11 +117,11 @@ export default {
                 }
             }
         },
-        modifyName: function(e, n) {
+        modifyName: function(value, n) {
             if (n == 1) {
-                this.msgNickname = e.target.value;
+                this.msgNickname = value;
             } else {
-                this.replyNickname = e.target.value;
+                this.replyNickname = value;
             }
         },
         saveConfig: function() {
