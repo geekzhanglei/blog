@@ -2,7 +2,7 @@
     <el-container>
         <el-header style="height:4rem">
             <div class="admin-title">
-                <a href="https://blog.feroad.com">传送门</a>
+                <router-link tag="a" :to="{name:'index'}">传送门</router-link>
             </div>
             <div class="admin-info">
                 <div class="infos">
