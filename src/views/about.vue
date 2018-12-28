@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <a class="aboutBgImg" href="javascript:;">
-            <img src="@/assets/img/programmer.gif">
+            <img src="http://img.feroad.com/programmer.gif">
         </a>
         <div class="cont">
             <h2 id="intro">项目概述</h2>
