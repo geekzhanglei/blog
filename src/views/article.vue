@@ -498,7 +498,8 @@ p.subhead span {
     font-weight: 700;
 }
 .comment .wrap .foot {
-    float: right;
+    display: flex;
+    justify-content: flex-end;
     font-size: 90%;
 }
 .comment .wrap .foot .expression {
