@@ -30,8 +30,8 @@
                         <div class="comments" v-for="(item,index) in list" :key="index">
                             <div class="comment-wrap">
                                 <div class="clearfix">
-                                    <span class="uid">{{item.userName}}</span>
-                                    <span class="curTime">{{transferTime(item.createTime)}}</span>
+                                    <span class="uid">{{item.username}}</span>
+                                    <span class="curTime">{{transferTime(item.created_at)}}</span>
                                 </div>
                                 <p class="comment">{{item.content}}</p>
                                 <div class="action clearfix">
@@ -223,10 +223,10 @@ export default {
                         this.pagingData.total = res.result.rows;
                         this.pagingData.curPage = e;
                         this.showPages = res.result.isPagination;
-                        this.pagingData.pageSize = Number(res.result.perpage);
+                        // this.pagingData.pageSize = Number(res.result.perpage);
                         // 默认评论名、默认回复名
-                        this.phcont = res.result.defaultCommentName;
-                        this.phReplyCont = res.result.defaultReplyName;
+                        // this.phcont = res.result.defaultCommentName;
+                        // this.phReplyCont = res.result.defaultReplyName;
                     } else {
                         this.list = [];
                         this.pagingData.total = 0;

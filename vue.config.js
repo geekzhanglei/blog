@@ -35,7 +35,7 @@ module.exports = {
         https: false,
         proxy: {
             '/api/': {
-                target: 'https://blogapi.feroad.com',
+                target: 'http://localhost:3000',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': ''

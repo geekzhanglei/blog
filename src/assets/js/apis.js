@@ -71,7 +71,7 @@ export const getArticle = params => {
 };
 // 获取文章列表
 export const getArticleList = params => {
-    return axios.get(`${Prefix}/article/getArticleList`, {
+    return axios.get(`${Prefix}/blogapi/article`, {
         params: params
     });
 };
@@ -92,7 +92,7 @@ export const addSupport = (articleId, params) => {
 };
 // 获取动态列表
 export const getMsgList = params => {
-    return axios.get(`${Prefix}/page`, {
+    return axios.get(`${Prefix}/blogapi/msg`, {
         params: params
     });
 };

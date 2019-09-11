@@ -26,7 +26,7 @@
 
 ### 三期内容
 
--   [ ] 替换原来已分离的后端架构 php+mysql，使用 nodejs 框架 koa 和 mongodb，涉及数据库的迁移等问题
+-   [x] 替换原来已分离的后端架构 php+mysql，使用 nodejs 框架 koa 和 mongodb，涉及数据库的迁移等问题
 
 ### 四期内容
 
