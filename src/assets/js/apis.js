@@ -51,9 +51,9 @@ axios.interceptors.response.use(
     },
     err => {
         if (err && err.response) {
-            errCode[err.response.status] ?
-                (err.message = errCode[err.response.status]) :
-                (err.message = `连接错误${err.response.status}`);
+            errCode[err.response.status]
+                ? (err.message = errCode[err.response.status])
+                : (err.message = `连接错误${err.response.status}`);
         } else {
             err.message = '连接到服务器失败';
         }
@@ -62,12 +62,18 @@ axios.interceptors.response.use(
 );
 
 /* api 列表 */
-let Prefix = process.env.NODE_ENV === 'production' ? 'https://blogapi.feroad.com' : '/api';
-let ImgPrefix = process.env.NODE_ENV === 'production' ? 'https://api.feroad.com' : '/imgapi';
+let Prefix =
+    process.env.NODE_ENV === 'production'
+        ? 'https://blogapi.feroad.com'
+        : '/api';
+let ImgPrefix =
+    process.env.NODE_ENV === 'production'
+        ? 'https://api.feroad.com'
+        : '/imgapi';
 
 // 获取某篇文章
 export const getArticle = params => {
-    return axios.get(`${Prefix}/article/newGetArticleDetails/${params}`);
+    return axios.get(`${Prefix}/blogapi/article/detail`, { params });
 };
 // 获取文章列表
 export const getArticleList = params => {
@@ -79,17 +85,17 @@ export const getArticleList = params => {
 export const addMark = params => {
     return (
         axios
-        // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
-        .post(`${Prefix}/article/addMark`, params)
+            // 如果不用Qs转变为字符串，传入对象会导致请求类型不是Form Data，而是Request Payload
+            .post(`${Prefix}/blogapi/article/marks/add`, params)
         // .then(res => res.data)
     );
 };
 // 文章评论点赞和取消点赞功能
-export const addSupport = (articleId, params) => {
-    return axios.get(`${Prefix}/article/agreeForArticleMarks/${articleId}`, {
-        params: params
-    });
-};
+// export const addSupport = (articleId, params) => {
+//     return axios.get(`${Prefix}/article/agreeForArticleMarks/${articleId}`, {
+//         params: params
+//     });
+// };
 // 获取动态列表
 export const getMsgList = params => {
     return axios.get(`${Prefix}/blogapi/msg`, {

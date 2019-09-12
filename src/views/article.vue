@@ -45,15 +45,15 @@
                                     </div>
                                     <div class="foot">
                                         <p>
-                                            <span class="expression">
+                                            <!-- <span class="expression">
                                                 <i
                                                     class="el-icon-star-off"
                                                     :class="{visited:item.isVisited}"
                                                     @click.stop="support(item)"
                                                 ></i>
                                                 <i v-if="item.agrees != 0">{{item.agrees}}</i>
-                                            </span>
-                                            <span>{{transferTime(item.create_time)}}</span>
+                                            </span>-->
+                                            <span>{{transferTime(Date.parse(item.create_time)/1000)}}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                                         <label for="comment-author">您的大名：</label>
                                     </p>
                                     <p>
-                                        <input size="30" v-model="comment.nickname">
+                                        <input size="30" v-model="comment.nickname" />
                                         <span class="hint">«-必填</span>
                                     </p>
                                 </div>
@@ -90,7 +90,7 @@
                                         <label for="comment-email">电子邮件：</label>
                                     </p>
                                     <p>
-                                        <input size="30" v-model="comment.email">
+                                        <input size="30" v-model="comment.email" />
                                         <span class="hint">«-必填，不公开</span>
                                     </p>
                                 </div>
@@ -103,7 +103,7 @@
                                             size="30"
                                             placeholder="如：www.baidu.com"
                                             v-model="comment.website"
-                                        >
+                                        />
                                         <span class="hint">«-你的个人网址</span>
                                     </p>
                                 </div>
@@ -114,7 +114,7 @@
                                             type="checkbox"
                                             :data-state="comment.state"
                                             @click="saveCookie()"
-                                        >
+                                        />
                                     </p>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
     </div>
 </template>
 <script>
-import { getArticle, addMark, addSupport } from "@/assets/js/apis";
+import { getArticle, addMark } from "@/assets/js/apis";
 import formatTime from "@/assets/js/utils";
 
 export default {
@@ -164,14 +164,11 @@ export default {
     methods: {
         // 请求文章数据接口
         reqArticleDataApi: function(id) {
-            getArticle(id).then(res => {
-                if (res.result) {
-                    if (res.result.status) {
-                        this.init(res.result.data);
-                    } else {
-                        console.log("接口请求返回错误");
-                    }
+            getArticle({ id: id }).then(res => {
+                if (res.result && res.result.status) {
+                    this.init(res.result);
                 } else {
+                    console.log("接口请求返回错误");
                     this.$router.replace({
                         path: "/"
                     });
@@ -198,7 +195,7 @@ export default {
                 content: this.comment.content
             }).then(res => {
                 var flag = res.result.status;
-                var _data = res.result.data;
+                var _data = res.result.msg;
                 if (flag) {
                     var _obj = {
                         id: this.comment.id,
@@ -308,46 +305,46 @@ export default {
             this.setCookie(name, value, date.toGMTString(), "", "", "");
         },
         // 点赞
-        support: function(item) {
-            var _this = this,
-                bool = false,
-                storage = window.localStorage,
-                category;
-            if (item.isVisited) {
-                item.isVisited = false;
-                storage.removeItem("comment_id" + item.id);
-            } else {
-                item.isVisited = true;
-                storage.setItem(
-                    "article_id" + item.article_id,
-                    item.article_id
-                );
-                storage.setItem("comment_id" + item.id, item.id);
-            }
-            item.agrees = Number(item.agrees);
-            item.isVisited ? (item.agrees += 1) : (item.agrees -= 1);
-            item.isVisited ? (category = 1) : (category = 2);
-            // 请求接口category1点赞，2取消
-            if (this.clickFlag) {
-                this.clickFlag = 0;
-                addSupport(item.id, { category }).then(res => {
-                    console.log(res);
-                });
-                setTimeout(function() {
-                    _this.clickFlag = 1;
-                }, 1000);
-            }
-        },
+        // support: function(item) {
+        //     var _this = this,
+        //         bool = false,
+        //         storage = window.localStorage,
+        //         category;
+        //     if (item.isVisited) {
+        //         item.isVisited = false;
+        //         storage.removeItem("comment_id" + item.id);
+        //     } else {
+        //         item.isVisited = true;
+        //         storage.setItem(
+        //             "article_id" + item.article_id,
+        //             item.article_id
+        //         );
+        //         storage.setItem("comment_id" + item.id, item.id);
+        //     }
+        //     item.agrees = Number(item.agrees);
+        //     item.isVisited ? (item.agrees += 1) : (item.agrees -= 1);
+        //     item.isVisited ? (category = 1) : (category = 2);
+        //     // 请求接口category1点赞，2取消
+        //     if (this.clickFlag) {
+        //         this.clickFlag = 0;
+        //         addSupport(item.id, { category }).then(res => {
+        //             console.log(res);
+        //         });
+        //         setTimeout(function() {
+        //             _this.clickFlag = 1;
+        //         }, 1000);
+        //     }
+        // },
         init: function(_data) {
             var _this = this,
                 comLen = _data.comments.length,
                 bool;
-            this.comment.id = _data.id;
-            this.title = _data.title;
-            this.username = _data.username;
-            this.time = this.transferTime(_data.updated_at);
-            this.cont = _data.content;
-            this.intro = _data.introduction;
+            this.comment.id = _data.data.id;
+            this.title = _data.data.title;
+            this.username = _data.data.username;
+            this.time = this.transferTime(_data.data.created_at);
+            this.cont = _data.data.content;
+            this.intro = _data.data.introduction;
             this.comments = _data.comments;
             if (this.comments[0]) {
                 this.comments.forEach(function(item) {
