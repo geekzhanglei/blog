@@ -57,7 +57,7 @@
                 <el-table-column type="expand">
                     <template slot-scope="props">
                         <el-table :data="props.row.reply">
-                            <el-table-column prop="rId" label="回复id"></el-table-column>
+                            <el-table-column prop="id" label="回复id"></el-table-column>
                             <el-table-column prop="content" label="回复内容"></el-table-column>
                             <el-table-column prop="replyUserName" label="作者"></el-table-column>
                             <el-table-column prop="createTime" label="时间"></el-table-column>
@@ -138,7 +138,7 @@ export default {
         reqMsgData: function(e = 1) {
             getAdminMsgList({
                 curpage: e,
-                perpage: this.perPage
+                pagesize: this.perPage
             }).then(res => {
                 var flag = res.result.status;
                 if (flag) {
@@ -176,7 +176,8 @@ export default {
         handleDelete() {
             this.tableData.splice(this.deleteCont.index, 1);
             // 再请求删除留言接口
-            deleteMsg(this.deleteCont.row.id, {
+            deleteMsg({
+                id: this.deleteCont.row.id,
                 token: window.localStorage.token
             });
             this.dialogVisible = false;

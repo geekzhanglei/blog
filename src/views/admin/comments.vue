@@ -51,7 +51,7 @@
             <el-table
                 :data="tableData"
                 style="width: 100%"
-                :default-sort="{prop: 'id', order: 'descending'}"
+                :default-sort="{prop: 'id', order: 'descending',}"
                 :row-class-name="getRowClass"
             >
                 <el-table-column type="expand">
@@ -157,8 +157,7 @@ export default {
         requestArticle: function(e = 1) {
             getArticleListWithMark({
                 curpage: e,
-                perpage: this.perPage,
-                token: window.localStorage.token
+                pagesize: this.perPage
             }).then(res => {
                 if (res.result.status) {
                     this.tableData = res.result.data;

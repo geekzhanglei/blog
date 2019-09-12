@@ -6,7 +6,7 @@
             </div>
             <div class="admin-info">
                 <div class="infos">
-                    <img :src="imgsrc">
+                    <img :src="imgsrc" />
                     <span class="avatar-name">{{nickname}}</span>
                 </div>
                 <div class="layer">
@@ -132,7 +132,7 @@ export default {
             }
             // 通知后台注销
             loginOut({ token: window.localStorage.token }).then(res => {
-                if (res.stat) {
+                if (res.result.status) {
                     // 清除本地token
                     window.localStorage.removeItem("token");
                     this.$router.replace({

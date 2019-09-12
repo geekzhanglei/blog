@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import { getArticleIntroList, deleteArticle } from "@/assets/js/apis";
+import { getArticleList, deleteArticle } from "@/assets/js/apis";
 import { Message } from "element-ui";
 
 export default {
@@ -47,7 +47,7 @@ export default {
     methods: {
         // 请求文章列表
         reqArticleList: function(curpage = 1) {
-            getArticleIntroList({
+            getArticleList({
                 curpage: curpage,
                 perpage: this.perpage
             }).then(res => {
@@ -82,8 +82,9 @@ export default {
                 return;
             }
 
-            deleteArticle(this.deleteId, {
-                token: window.localStorage.token
+            deleteArticle({
+                token: window.localStorage.token,
+                id: this.deleteId
             }).then(res => {
                 if (res.result.status) {
                     this.dialogVisible = false;

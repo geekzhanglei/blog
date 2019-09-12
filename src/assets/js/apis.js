@@ -107,37 +107,40 @@ export const addReplyMsg = params => {
     return axios.post(`${Prefix}/blogapi/msg/replyadd`, params);
 };
 // 动态点赞功能
-export const msgSupport = (id, params) => {
-    return axios.get(`${Prefix}/agree/${id}`, {
-        params: params
-    });
+export const msgSupport = params => {
+    return axios.get(`${Prefix}/blogapi/msg/agree`, { params });
 };
 // 登录接口
 export const adminLogin = params => {
-    return axios.post(`${Prefix}/admin/login`, params);
+    return axios.post(`${Prefix}/blogapi/admin/login`, params);
 };
 // 判断是否登录态
 export const isLogin = params => {
-    return axios.get(`${Prefix}/admin/isLogin`, {
+    return axios.get(`${Prefix}/blogapi/admin/isLogin`, {
         params: params
     });
 };
 // 获取个人信息
 export const getAdminInfo = params => {
-    return axios.get(`${Prefix}/admin/getAdministerInfo`, {
+    return axios.get(`${Prefix}/blogapi/admin/adminInfo`, {
         params: params
     });
 };
 // 登录注销
 export const loginOut = params => {
-    return axios.get(`${Prefix}/admin/loginout`, {
+    return axios.get(`${Prefix}/blogapi/admin/loginout`, {
         params: params
     });
 };
 // 修改密码
 export const modifyPsw = params => {
-    return axios.post(`${Prefix}/admin/modifyPassword`, params);
+    return axios.post(`${Prefix}/blogapi/admin/modifypw`, params);
 };
+// 修改个人信息
+export const modifyAdministerInfo = params => {
+    return axios.post(`${Prefix}/blogapi/admin/modifyAdminInfo`, params);
+};
+
 // 设置默认文章页数
 export const setDefaultArticlePages = params => {
     return axios.post(`${Prefix}/admin/setDefaultArticlePages`, params);
@@ -146,21 +149,19 @@ export const setDefaultArticlePages = params => {
 export const setDefaultCommentInfos = params => {
     return axios.post(`${Prefix}/admin/setDefaultCommentInfos`, params);
 };
-// 后台留言列表获取
+// 获取带回复的动态
 export const getAdminMsgList = params => {
-    return axios.get(`${Prefix}/pageForAdmin`, {
+    return axios.get(`${Prefix}/blogapi/admin/msgwithmarks`, {
         params: params
     });
 };
 // 删除留言
-export const deleteMsg = (id, params) => {
-    return axios.get(`${Prefix}/delete/${id}`, {
-        params: params
-    });
+export const deleteMsg = params => {
+    return axios.post(`${Prefix}/blogapi/msg/delete`, params);
 };
 // 发布文章
 export const releaseArt = params => {
-    return axios.post(`${Prefix}/article/add`, params);
+    return axios.post(`${Prefix}/blogapi/article/release`, params);
 };
 // 删除评论
 export const deleteComms = (id, params) => {
@@ -170,26 +171,19 @@ export const deleteComms = (id, params) => {
 };
 // 获取带评论的文章
 export const getArticleListWithMark = params => {
-    return axios.post(`${Prefix}/article/getArticleListWithMark`, params);
+    return axios.get(`${Prefix}/blogapi/admin/articlesWithMarks`, { params });
 };
 // 获取带摘要的文章列表
-export const getArticleIntroList = params => {
-    return axios.get(`${Prefix}/admin/getArticleIntroList`, {
-        params: params
-    });
-};
+// export const getArticleIntroList = params => {
+//     return axios.get(`${Prefix}/admin/getArticleIntroList`, {
+//         params: params
+//     });
+// };
 // 删除文章
-export const deleteArticle = (id, params) => {
-    return axios.post(`${Prefix}/article/deleteArticleById/${id}`, params);
+export const deleteArticle = params => {
+    return axios.post(`${Prefix}/blogapi/article/delete`, params);
 };
-// 上传头像图片
-export const modifyAdministerInfo = params => {
-    return axios.post(`${Prefix}/admin/modityAdministerInfo`, params, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
-};
+
 // markdown内图片逐一上传
 export const markdownImgUpload = params => {
     return axios.post(`${ImgPrefix}/upload`, params, {

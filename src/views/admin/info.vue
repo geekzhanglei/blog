@@ -17,18 +17,18 @@
                     <div v-if="!showEditInfo" class="info-headinfo">
                         <span @click="editInfo" class="edit-link">编辑</span>
                         <div class="info-avatar">
-                            <img :src="imgsrc" alt="img is gone">
+                            <img :src="imgsrc" alt="img is gone" />
                         </div>
                         <div class="info-nickname">{{nickname}}</div>
                     </div>
                     <div v-else class="edit-info">
                         <div class="info-avatar">
                             <div @click="clickInput" class="info-img">
-                                <img :src="imgsrc">
+                                <img :src="imgsrc" />
                             </div>
-                            <input @change="uploadImg" type="file" style="display:none" ref="input">
+                            <input @change="uploadImg" type="file" style="display:none" ref="input" />
                             <div class="edit-username">
-                                <input type="text" v-model="inputName" placeholder="请输入您的昵称">
+                                <input type="text" v-model="inputName" placeholder="请输入您的昵称" />
                                 <em v-if="showNicknameErr&&showNameErr" class="err">昵称不能为空</em>
                             </div>
                             <div class="edit-confirm">
@@ -49,7 +49,7 @@
                                 v-model="oldPswd"
                                 @input="showPwErr(1)"
                                 placeholder="请输入当前密码"
-                            >
+                            />
                             <span v-if="errTip.one" class="info-err">请输入6-16位密码，字母区分大小写</span>
                             <span v-if="errTip.pswdErr" class="info-err">原密码输入错误，请核对后再输入</span>
                         </dd>
@@ -59,7 +59,7 @@
                                 v-model="newPswd"
                                 @input="showPwErr(2)"
                                 placeholder="请输入新密码"
-                            >
+                            />
                             <span v-if="errTip.two" class="info-err">请输入6-16位密码，字母区分大小写</span>
                         </dd>
                         <dd>
@@ -68,11 +68,11 @@
                                 v-model="confirmPswd"
                                 @input="showPwErr(3)"
                                 placeholder="确认新密码"
-                            >
+                            />
                             <span v-if="errTip.three" class="info-err">两次输入的密码不一致，请重新输入</span>
                         </dd>
                         <dd>
-                            <input @click="savePswd" type="submit" value="保存">
+                            <input @click="savePswd" type="submit" value="保存" />
                         </dd>
                     </dl>
                     <div v-else class="updatePw">
@@ -226,10 +226,10 @@ export default {
                     password: Base64.encode(this.oldPswd),
                     newpassword: Base64.encode(this.newPswd)
                 }).then(res => {
-                    if (res.result.status == 2) {
+                    if (res.result.status == 0) {
                         this.errTip.pswdErr = true;
                     } else if (res.result.status == 1) {
-                        console.log(res.result.data);
+                        console.log(res.result.msg);
                         this.oldPswd = "";
                         this.newPswd = "";
                         this.confirmPswd = "";
@@ -237,7 +237,7 @@ export default {
                         this.countStart(this.countdown);
                     } else {
                         this.errTip.pswdErr = true;
-                        console.log(res.result.data);
+                        console.log(res.result.msg);
                     }
                 });
             }
@@ -265,7 +265,7 @@ export default {
             }
             // 通知后台注销
             loginOut({ token: window.localStorage.token }).then(res => {
-                if (res.stat) {
+                if (res.result.status) {
                     window.localStorage.clear();
                     this.$router.replace({
                         path: "/login"

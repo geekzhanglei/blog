@@ -383,10 +383,8 @@ export default {
                 bool = false,
                 storage = window.localStorage,
                 id = item.id || item.rId,
-                category,
-                typeid;
-            // 判断点击是评论1还是回复2
-            item.id ? (typeid = 1) : (typeid = 2);
+                category; // category 1是点赞，2是取消点赞
+
             if (item.isVisited) {
                 item.isVisited = false;
                 if (item.commentId) {
@@ -410,9 +408,9 @@ export default {
             // 请求接口，修改点赞信息
             if (this.clickFlag) {
                 this.clickFlag = 0;
-                msgSupport(id, {
-                    type: typeid,
-                    category: category
+                msgSupport({
+                    id,
+                    isAdd: category
                 }).then(res => {
                     console.log(res);
                 });
