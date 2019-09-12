@@ -77,9 +77,7 @@ export const getArticle = params => {
 };
 // 获取文章列表
 export const getArticleList = params => {
-    return axios.get(`${Prefix}/blogapi/article`, {
-        params: params
-    });
+    return axios.get(`${Prefix}/blogapi/article`, { params });
 };
 // 文章增加评论功能
 export const addMark = params => {
@@ -98,17 +96,15 @@ export const addMark = params => {
 // };
 // 获取动态列表
 export const getMsgList = params => {
-    return axios.get(`${Prefix}/blogapi/msg`, {
-        params: params
-    });
+    return axios.get(`${Prefix}/blogapi/msg`, { params });
 };
 // 添加动态
 export const addMsg = params => {
-    return axios.post(`${Prefix}/add`, params);
+    return axios.post(`${Prefix}/blogapi/msg/add`, params);
 };
 // 动态下添加评论
 export const addReplyMsg = params => {
-    return axios.post(`${Prefix}/reply/add`, params);
+    return axios.post(`${Prefix}/blogapi/msg/replyadd`, params);
 };
 // 动态点赞功能
 export const msgSupport = (id, params) => {

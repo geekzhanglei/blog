@@ -95,18 +95,18 @@
                                     >{{answer.replyUserName}}</span>
                                     <div v-else>
                                         <span class="uid">{{answer.replyUserName}}</span>
-                                        <span class="uid reply">回复:</span>
-                                        <span class="uid">{{answer.toReplyUserName}}</span>
+                                        <!-- <span class="uid reply">回复:</span>
+                                        <span class="uid">{{answer.toReplyUserName}}</span>-->
                                         <span class="curTime">{{transferTime(answer.createTime)}}</span>
                                     </div>
                                 </div>
                                 <p class="comment">{{answer.content}}</p>
                                 <div class="action clearfix">
-                                    <a
+                                    <!-- <a
                                         href="javascript:;"
                                         v-on:click="displayReplyInput(item,i)"
                                         class="answer"
-                                    >{{item.reply[i].isAnswer}}</a>
+                                    >{{item.reply[i].isAnswer}}</a>-->
                                     <a v-if="answer.agrees != 0">{{answer.agrees}}</a>
                                     <a
                                         class="glyphicon glyphicon-thumbs-up"
@@ -114,7 +114,7 @@
                                         @click.stop="support(answer)"
                                     ></a>
                                 </div>
-                                <div class="write-answer" v-show="answer.isShowReplyInput">
+                                <!-- <div class="write-answer" v-show="answer.isShowReplyInput">
                                     <div class="msg-input clearfix">
                                         <el-input
                                             type="textarea"
@@ -139,7 +139,7 @@
                                             <span class="replyErrTip">{{item.replyErr}}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -223,7 +223,7 @@ export default {
                         this.pagingData.total = res.result.rows;
                         this.pagingData.curPage = e;
                         this.showPages = res.result.isPagination;
-                        // this.pagingData.pageSize = Number(res.result.perpage);
+                        this.pagingData.pageSize = Number(res.result.perpage);
                         // 默认评论名、默认回复名
                         // this.phcont = res.result.defaultCommentName;
                         // this.phReplyCont = res.result.defaultReplyName;
@@ -260,20 +260,20 @@ export default {
             }
         },
         // 回复的回复按钮
-        displayReplyInput: function(item, index) {
-            if (item.reply[index].isShowReplyInput === false) {
-                // 关闭回复留言框
-                item.isAnswer = "回复";
-                item.isShowInput = false;
-                this.closeAnswerList(item);
-                // 自身逻辑
-                item.reply[index].isAnswer = "取消回复";
-                item.reply[index].isShowReplyInput = true;
-            } else {
-                item.reply[index].isShowReplyInput = false;
-                item.reply[index].isAnswer = "回复";
-            }
-        },
+        // displayReplyInput: function(item, index) {
+        //     if (item.reply[index].isShowReplyInput === false) {
+        //         // 关闭回复留言框
+        //         item.isAnswer = "回复";
+        //         item.isShowInput = false;
+        //         this.closeAnswerList(item);
+        //         // 自身逻辑
+        //         item.reply[index].isAnswer = "取消回复";
+        //         item.reply[index].isShowReplyInput = true;
+        //     } else {
+        //         item.reply[index].isShowReplyInput = false;
+        //         item.reply[index].isAnswer = "回复";
+        //     }
+        // },
         // 展开回复列表
         displayAnswers: function(item) {
             if (item.isUnfoldAnswers === "查看回复") {
@@ -319,19 +319,19 @@ export default {
                 data = {
                     username: item.replyName,
                     content: item.replyCont,
-                    comment_id: id,
-                    reply_id: item.reply[index].rId,
-                    reply_type: 2,
-                    reply_username: item.reply[index].replyUserName
+                    comment_id: id
+                    // username: item.replyName,
+                    // reply_id: item.reply[index].rId,
+                    // reply_type: 2
                 };
             } else {
                 data = {
-                    username: item.replyName,
-                    content: item.replyCont,
                     comment_id: id,
-                    reply_id: id,
-                    reply_type: 1,
-                    reply_username: item.userName
+                    username: item.replyName,
+                    content: item.replyCont
+                    // username: item.replyName,
+                    // reply_id: id,
+                    // reply_type: 1,
                 };
             }
             addReplyMsg(data).then(res => {
@@ -362,8 +362,8 @@ export default {
                 this.inputName = this.phcont;
             }
             addMsg({
-                content: this.inputMsg,
-                username: this.inputName
+                username: this.inputName,
+                content: this.inputMsg
             }).then(res => {
                 // 清空留言输入框
                 this.inputMsg = "";
