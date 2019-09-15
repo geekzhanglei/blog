@@ -33,8 +33,8 @@
                         type="text"
                         id="pagesize1"
                         class="form-control"
-                        :disabled="!selectedArtPage"
-                        @input="changePageNum($event,1)"
+                        :disabled = "!selectedArtPage"
+                        v-model = "articlePerPage"
                         placeholder="输入整数（默认5）"
                     ></el-input>
                 </el-col>
@@ -63,8 +63,8 @@
                         type="text"
                         id="msgAdminInput"
                         class="form-control"
-                        :disabled="!selectedMsgPage"
-                        @input="changePageNum($event,2)"
+                        :disabled = "!selectedMsgPage"
+                        v-model = "msgPerPage"
                         placeholder="输入整数（默认5）"
                     ></el-input>
                 </el-col>
@@ -74,13 +74,13 @@
             <el-col :span="12">
                 <el-col :span="12">动态默认昵称</el-col>
                 <el-col :span="10">
-                    <el-input type="text" @input="modifyName($event,1)" placeholder="输入留言默认昵称"></el-input>
+                    <el-input type="text" v-model="msgNickname" placeholder="输入留言默认昵称"></el-input>
                 </el-col>
             </el-col>
             <el-col :span="12">
                 <el-col :span="12">动态回复默认昵称</el-col>
                 <el-col :span="10">
-                    <el-input type="text" @input="modifyName($event,2)" placeholder="输入回复默认昵称"></el-input>
+                    <el-input type="text" v-model="replyNickname" placeholder="输入回复默认昵称"></el-input>
                 </el-col>
             </el-col>
         </el-row>
@@ -89,41 +89,42 @@
 <script>
 import {
     setDefaultArticlePages,
-    setDefaultCommentInfos
+    setDefaultCommentInfos,
+    getOptions
 } from "@/assets/js/apis";
 import { Message } from "element-ui";
 
 export default {
     data: function() {
         return {
-            selectedArtPage: 0,
-            selectedMsgPage: 0,
-            artPageSize: 5,
-            msgPageSize: 5,
-            msgNickname: "管理员",
-            replyNickname: "小管理员",
+            selectedArtPage: false,
+            selectedMsgPage: false,
+            articlePerPage: 5,
+            msgPerPage: 5,
+            msgNickname: "留言默认作者",
+            replyNickname: "回复默认作者",
             saveConErr: false,
             saveConOK: false
         };
     },
     methods: {
-        changePageNum: function(value, n) {
-            // 判断必须是整数
-            if (parseInt(value) == value && value > 0) {
-                if (n == 1) {
-                    this.artPageSize = value;
-                } else {
-                    this.msgPageSize = value;
-                }
-            }
-        },
-        modifyName: function(value, n) {
-            if (n == 1) {
-                this.msgNickname = value;
-            } else {
-                this.replyNickname = value;
-            }
-        },
+        // changePageNum: function(value, n) {
+        //     // 判断必须是整数
+        //     if (parseInt(value) == value && value > 0) {
+        //         if (n == 1) {
+        //             this.artPageSize = value;
+        //         } else {
+        //             this.msgPageSize = value;
+        //         }
+        //     }
+        // },
+        // modifyName: function(value, n) {
+        //     if (n == 1) {
+        //         this.msgNickname = value;
+        //     } else {
+        //         this.replyNickname = value;
+        //     }
+        // },
         saveConfig: function() {
             if (!window.localStorage.token) {
                 this.$message({
@@ -139,9 +140,8 @@ export default {
             // 更新文章接口数据
             setDefaultArticlePages({
                 token: window.localStorage.token,
-                type: this.selectedArtPage ? 1 : 2,
-                curpage: 1,
-                perpage: this.artPageSize
+                ispage: this.selectedArtPage,
+                perpage: this.articlePerPage
             }).then(res => {
                 if (res.result.status) {
                     console.log("文章列表设置成功，返回：" + res.result.data);
@@ -163,8 +163,8 @@ export default {
             // 更新留言板接口数据
             setDefaultCommentInfos({
                 token: window.localStorage.token,
-                type: this.selectedMsgPage ? 1 : 2,
-                perpage: this.msgPageSize,
+                ispage: this.selectedMsgPage,
+                perpage: this.msgPerPage,
                 defaultCommentName: this.msgNickname,
                 defaultReplyName: this.replyNickname
             }).then(res => {
@@ -177,11 +177,25 @@ export default {
                     this.saveConErr = true;
                 }
             });
+        },
+        init() {
+            getOptions().then(res => { 
+                let data = res.result;
+                if(data.status) {
+                    this.selectedArtPage = data.articleIsPage;
+                    this.selectedMsgPage = data.msgIsPage;
+                    this.articlePerPage = data.articlePerPage;
+                    this.msgPerPage = data.msgPerPage;
+                    this.msgNickname = data.msgName;
+                    this.replyNickname = data.msgReplyName;
+                }
+            })
         }
     },
     created: function() {
         this.saveConErr = false;
         this.saveConOK = false;
+        this.init();
     }
 };
 </script>

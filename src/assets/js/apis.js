@@ -143,11 +143,15 @@ export const modifyAdministerInfo = params => {
 
 // 设置默认文章页数
 export const setDefaultArticlePages = params => {
-    return axios.post(`${Prefix}/admin/setDefaultArticlePages`, params);
+    return axios.post(`${Prefix}/blogapi/admin/setDefaultArticlePages`, params);
 };
 // 修改留言板单页条数与默认留言昵称、默认回复昵称接口
 export const setDefaultCommentInfos = params => {
-    return axios.post(`${Prefix}/admin/setDefaultCommentInfos`, params);
+    return axios.post(`${Prefix}/blogapi/admin/setDefaultCommentInfos`, params);
+};
+// 获取默认文章与留言配置
+export const getOptions = () => {
+    return axios.get(`${Prefix}/blogapi/admin/options`);
 };
 // 获取带回复的动态
 export const getAdminMsgList = params => {
@@ -164,10 +168,8 @@ export const releaseArt = params => {
     return axios.post(`${Prefix}/blogapi/article/release`, params);
 };
 // 删除评论
-export const deleteComms = (id, params) => {
-    return axios.get(`${Prefix}/article/deleteMark/${id}`, {
-        params: params
-    });
+export const deleteComms = params => {
+    return axios.get(`${Prefix}/blogapi/admin/deleteMark`, { params });
 };
 // 获取带评论的文章
 export const getArticleListWithMark = params => {
