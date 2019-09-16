@@ -1,3 +1,10 @@
+/*
+ * @Author: zhanglei
+ * @Date: 2019-09-16 15:29:44
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-16 15:57:43
+ * @Description:
+ */
 module.exports = {
     // 基本路径
     outputDir: 'dist',
@@ -30,8 +37,8 @@ module.exports = {
     // webpack-dev-server 相关配置
     devServer: {
         // open: process.platform === 'darwin',
-        host: '0.0.0.0',
-        port: 8080,
+        host: '127.0.0.1',
+        port: 3000,
         https: false,
         proxy: {
             '/api/': {
@@ -47,7 +54,7 @@ module.exports = {
                 pathRewrite: {
                     '^/imgapi': ''
                 }
-            },
+            }
         },
         before: app => {}
     },
@@ -70,7 +77,7 @@ module.exports = {
             // 在这个页面中包含的块，默认情况下会包含
             // 提取出来的通用 chunk 和 vendor chunk。
             chunks: ['chunk-vendors', 'chunk-common', 'index']
-        },
+        }
         // admin: {
         //     // page 的入口
         //     entry: 'src/conf/admin.js',
