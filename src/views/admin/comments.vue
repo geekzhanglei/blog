@@ -51,7 +51,7 @@
             <el-table
                 :data="tableData"
                 style="width: 100%"
-                :default-sort="{prop: 'id', order: 'descending'}"
+                :default-sort="{prop: 'id', order: 'descending',}"
                 :row-class-name="getRowClass"
             >
                 <el-table-column type="expand">
@@ -65,11 +65,10 @@
                                 <template slot-scope="scope">
                                     <el-button
                                         size="mini"
-                                        v-if="scope.row.status==1"
                                         type="danger"
                                         @click="triggerModal(scope.$index, scope.row)"
                                     >删除</el-button>
-                                    <el-button size="mini" v-else type="primary">已删除</el-button>
+                                    <!-- <el-button size="mini" v-else type="primary">已删除</el-button> -->
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -119,7 +118,8 @@ export default {
     data: function() {
         return {
             dialogVisible: false,
-            deleteCont: {}
+            deleteCont: {},
+            tableData: []
         };
     },
     methods: {
@@ -142,23 +142,34 @@ export default {
             };
         },
         handleDelete: function() {
-            deleteComms(this.deleteCont.row.id, {
-                token: window.localStorage.token
-            }).then(res => {
-                this.deleteCont.row.status = 2;
-                if (res.result.status) {
-                    console.log("删除成功");
-                } else {
-                    console.log("该条目已删除，不可重复删除");
+            // 前端数据删除
+            this.tableData.forEach(ele => {
+                if (ele.marks.length) {
+                    ele.marks = ele.marks.filter(e => {
+                        return e.id != this.deleteCont.row.id;
+                    });
                 }
-                this.dialogVisible = false;
             });
+
+            // 请求接口删除
+            // deleteComms({
+            //     token: window.localStorage.token,
+            //     id: this.deleteCont.row.id
+            // }).then(res => {
+            //     if (res.result.status) {
+            //         // 删除成功
+            //         console.log("删除成功");
+            //     } else {
+            //         // 删除失败
+            //         console.log("该条目已删除，不可重复删除");
+            //     }
+            //     this.dialogVisible = false;
+            // });
         },
         requestArticle: function(e = 1) {
             getArticleListWithMark({
                 curpage: e,
-                perpage: this.perPage,
-                token: window.localStorage.token
+                pagesize: this.perPage
             }).then(res => {
                 if (res.result.status) {
                     this.tableData = res.result.data;
@@ -249,7 +260,7 @@ export default {
         initPage: function(data) {
             // 分页组件赋值
             this.total = Number(data.rows);
-            this.perPage = 5; // 神仙数字，接口未提供
+            this.perPage = Number(data.perpage);
         }
     },
     mounted: function() {

@@ -1,3 +1,10 @@
+<!--
+ * @Author: zhanglei
+ * @Date: 2019-09-10 16:06:26
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-16 14:32:48
+ * @Description:
+ -->
 <template>
     <el-container>
         <el-header style="height:4rem">
@@ -6,7 +13,7 @@
             </div>
             <div class="admin-info">
                 <div class="infos">
-                    <img :src="imgsrc">
+                    <img :src="imgsrc" />
                     <span class="avatar-name">{{nickname}}</span>
                 </div>
                 <div class="layer">
@@ -132,7 +139,7 @@ export default {
             }
             // 通知后台注销
             loginOut({ token: window.localStorage.token }).then(res => {
-                if (res.stat) {
+                if (res.result.status) {
                     // 清除本地token
                     window.localStorage.removeItem("token");
                     this.$router.replace({

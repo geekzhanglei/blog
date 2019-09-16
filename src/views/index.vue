@@ -12,7 +12,7 @@
                                 >{{item.title}}</router-link>
                             </h4>
                             <p v-html="item.introduction"></p>
-                            <p class="time">{{transferTime(item.createTime)}}</p>
+                            <p class="time">{{transferTime(item.created_at)}}</p>
                         </div>
                     </div>
                 </div>

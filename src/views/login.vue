@@ -44,9 +44,9 @@ export default {
                     username: _this.loginname,
                     password: _this.loginpwd
                 }).then(res => {
-                    if (res.stat) {
+                    if (res.result.status) {
                         var storage = window.localStorage;
-                        storage.setItem("token", res.token);
+                        storage.setItem("token", res.result.token);
                         _this.loginname = "";
                         _this.loginpwd = "";
                         _this.$router.replace({
@@ -74,7 +74,7 @@ export default {
             //判断是否登陆,请求后端验证token
             if (window.localStorage.token) {
                 isLogin({ token: window.localStorage.token }).then(res => {
-                    if (res.stat) {
+                    if (res.result.status) {
                         console.log(res.data);
                         _this.loginname = "";
                         _this.loginpwd = "";

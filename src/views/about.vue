@@ -1,28 +1,43 @@
+<!--
+ * @Author: zhanglei
+ * @Date: 2019-09-10 16:06:26
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-16 15:18:12
+ * @Description: 关于博客
+ -->
 <template>
     <div class="container">
         <a class="aboutBgImg" href="javascript:;">
-            <img src="http://img.feroad.com/programmer.gif">
+            <img src="http://img.feroad.com/programmer.gif" />
         </a>
         <div class="cont">
             <h2 id="intro">项目概述</h2>
             <p>这是一个为学习和实践前后端技术而搭建的博客</p>
-            <p>当前技术栈：vue/cli@3.0+vue+element-ui+nodejs+mongodb（过渡期保留php+mysql的后端）</p>
+            <h3>技术栈演进：</h3>
+            <h4>1. 当前技术栈(vue/cli@3.0+vue+element-ui+nodejs(koa2)+mysql)</h4>
             <p>
-                前端：geekzl
-                <a href="https://github.com/geekzhanglei/blog">(重构前端源码)</a>
+                不想理解后端的前端不是好前端，我重写了后端接口，对后端有了基础了解，源码在这里：
+                <a
+                    href="https://github.com/geekzhanglei/blog"
+                >前端源码</a> ----
+                <a href="https://github.com/geekzhanglei/beta_koa2_mysql">后端源码</a>
             </p>
-            <p>后端：大民哥</p>
-            <p>联系方式:</p>
-            <ul>
-                <li>
-                    qq:
-                    <code>1103307205</code>
-                </li>
-                <li>
-                    电子邮箱:
-                    <code>1103307205@qq.com</code>
-                </li>
-            </ul>
+            <h4>2. 中期迭代技术栈(nuxtjs+php+mysql)</h4>
+            <p>
+                实践了vue的服务端渲染nuxtjs，试图提高加载速度，源码在这里:
+                <a
+                    href="https://github.com/geekzhanglei/blog-nuxt"
+                >前端源码</a>
+                后端还是民哥
+            </p>
+            <h4>3. 中期技术栈(vue+vue-router+vuex+vue-cli@2.0+axios+php+mysql)</h4>
+            <p>上vue全家桶，抛弃jquery、grunt，后端依然是民哥</p>
+            <h4>4. 初期技术栈(lithe(seajs)+grunt+vue+jquery+bootstrap+php+mysql)</h4>
+            <p>
+                <span>我是前端，这套比较"杂"的技术栈来源于工作实践，源码在这里：</span>
+                <a href="https://github.com/geekzhanglei/blogbeta">初代前端源码传送门</a>
+                后端是不愿意透露姓名的民哥
+            </p>
         </div>
     </div>
 </template>
@@ -51,6 +66,8 @@ export default {};
 .cont {
     margin: 0 auto;
     width: 80%;
+    height: 50vh;
+    overflow-y: auto;
 }
 @media screen and (max-width: 600px) {
     .container {
