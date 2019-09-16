@@ -144,15 +144,13 @@ export default {
         handleDelete: function() {
             // 前端数据删除
             this.tableData.forEach(ele => {
-                if(ele.marks) {
-                    console.log(ele.marks);
-                        ele.marks.map(e => {
-                            if(e.id != this.deleteCont.row.id) {
-                                console.log(e)
-                            } 
-                        })
+                if (ele.marks.length) {
+                    ele.marks = ele.marks.filter(e => {
+                        return e.id != this.deleteCont.row.id;
+                    });
                 }
             });
+
             // 请求接口删除
             // deleteComms({
             //     token: window.localStorage.token,
@@ -160,8 +158,6 @@ export default {
             // }).then(res => {
             //     if (res.result.status) {
             //         // 删除成功
-                  
-            //         console.log(this.tableData)
             //         console.log("删除成功");
             //     } else {
             //         // 删除失败
