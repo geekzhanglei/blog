@@ -1,3 +1,10 @@
+<!--
+ * @Author: zhanglei
+ * @Date: 2019-09-10 16:06:26
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-16 14:27:04
+ * @Description:
+ -->
 <template>
     <div class="wrap-info">
         <div class="tips">
@@ -166,6 +173,7 @@ export default {
                 formdata.append("nickname", this.$store.state.nickname);
                 formdata.append("token", window.localStorage.token);
                 formdata.append("headImg", this.file);
+
                 modifyAdministerInfo(formdata).then(res => {
                     console.log(res);
                 });
