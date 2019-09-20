@@ -1,3 +1,10 @@
+/*
+ * @Author: zhanglei
+ * @Date: 2019-09-16 15:29:44
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-16 16:23:50
+ * @Description: axios配置
+ */
 /**
  * @author zhanglei25@le.com
  * @date 2018.10.19
