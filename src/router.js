@@ -2,10 +2,9 @@
  * @Author: zhanglei
  * @Date: 2019-09-10 16:06:26
  * @LastEditors: zhanglei
- * @LastEditTime: 2019-09-20 13:10:34
+ * @LastEditTime: 2019-09-20 15:20:05
  * @Description: 路由组件
  */
-import Vue from 'vue';
 import Router from 'vue-router';
 // 业务子页
 const Index = () =>

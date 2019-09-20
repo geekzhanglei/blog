@@ -2,7 +2,7 @@
  * @Author: zhanglei
  * @Date: 2019-09-16 15:29:44
  * @LastEditors: zhanglei
- * @LastEditTime: 2019-09-16 15:57:43
+ * @LastEditTime: 2019-09-20 15:15:05
  * @Description:
  */
 module.exports = {
@@ -13,7 +13,12 @@ module.exports = {
     // webpack配置
     // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
     chainWebpack: () => {},
-    configureWebpack: () => {},
+    configureWebpack: {
+        externals: {
+            vue: 'Vue',
+            'element-ui': 'ELEMENT'
+        }
+    },
     // vue-loader 配置项
     // https://vue-loader.vuejs.org/en/options.html
     // vueLoader: {},

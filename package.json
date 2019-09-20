@@ -7,12 +7,10 @@
         "build": "vue-cli-service build --report"
     },
     "dependencies": {
-        "element-ui": "^2.4.5",
         "js-base64": "^2.4.9",
         "mavon-editor": "^2.6.17",
         "promise": "^8.0.2",
         "qs": "^6.5.2",
-        "vue": "^2.5.17",
         "vue-router": "^3.0.1",
         "vuex": "^3.0.1"
     },

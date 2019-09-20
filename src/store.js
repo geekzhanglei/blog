@@ -1,4 +1,10 @@
-import Vue from 'vue';
+/*
+ * @Author: zhanglei
+ * @Date: 2019-09-10 16:06:26
+ * @LastEditors: zhanglei
+ * @LastEditTime: 2019-09-10 16:06:26
+ * @Description: 
+ */
 import Vuex from 'vuex';
 import imgDefault from '@/assets/img/avatar.png';
 import global from '@/assets/js/global';
