@@ -2,7 +2,7 @@
  * @Author: zhanglei
  * @Date: 2019-09-16 15:29:44
  * @LastEditors: zhanglei
- * @LastEditTime: 2019-09-16 16:23:50
+ * @LastEditTime: 2019-09-20 13:15:51
  * @Description: axios配置
  */
 /**
@@ -70,9 +70,7 @@ axios.interceptors.response.use(
 
 /* api 列表 */
 let Prefix =
-    process.env.NODE_ENV === 'production'
-        ? 'https://blogapi.feroad.com'
-        : '/api';
+    process.env.NODE_ENV === 'production' ? 'https://blog.feroad.com' : '/api';
 let ImgPrefix =
     process.env.NODE_ENV === 'production'
         ? 'https://api.feroad.com'
